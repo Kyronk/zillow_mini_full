@@ -5,19 +5,56 @@ module.exports = {
         await queryInterface.createTable('Posts', {
             id: {
                 allowNull: false,
-                autoIncrement: true,
+                // autoIncrement: true,
                 primaryKey: true,
-                type: Sequelize.INTEGER
-            },
-            firstName: {
                 type: Sequelize.STRING
             },
-            lastName: {
+            title: {
                 type: Sequelize.STRING
             },
-            email: {
+            star: {
+                type: Sequelize.STRING,
+                defaultValue: '0'
+            },
+            labelCode: {
                 type: Sequelize.STRING
             },
+            address: {
+                type: Sequelize.STRING
+            },
+            attributesId: {
+                type: Sequelize.STRING
+            },
+            categoryCode: {
+                type: Sequelize.STRING
+            },
+            // priceCode: {
+            //     type: Sequelize.STRING
+            // },
+            // areaCode: {
+            //     type: Sequelize.STRING
+            // },
+            // provinceCode: {
+            //     type: Sequelize.STRING
+            // },
+            description: {
+                type: Sequelize.TEXT
+            },
+            userId: {
+                type: Sequelize.STRING
+            },
+            overviewId: {
+                type: Sequelize.STRING
+            },
+            imagesId: {
+                type: Sequelize.STRING
+            },
+            // priceNumber: {
+            //     type: Sequelize.FLOAT
+            // },
+            // areaNumber: {
+            //     type: Sequelize.FLOAT
+            // },
             createdAt: {
                 allowNull: false,
                 type: Sequelize.DATE
