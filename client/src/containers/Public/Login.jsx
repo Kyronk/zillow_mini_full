@@ -4,12 +4,13 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { apiRegister } from '../../services/auth';
 import * as actions from "../../store/actions";
 import { useDispatch, useSelector } from "react-redux";
+import Swal from "sweetalert2";
 
 const Login = () => {
 
     const location = useLocation();
     const dispatch = useDispatch();
-    const { isLoggedIn } = useSelector(state => state.auth);
+    const { isLoggedIn, msg, update } = useSelector(state => state.auth);
     const navigate = useNavigate();
 
     const [ isRegister, setIsRegister ] = useState(location.state?.flag);
@@ -29,6 +30,10 @@ const Login = () => {
     useEffect(() => {
         isLoggedIn && navigate("/")
     }, [isLoggedIn]);
+
+    useEffect(() => {
+        msg && Swal.fire("Oops!", msg, "error");
+    }, [msg, update]);
 
     const handleSubmit = async() => {
         // console.log(payload)
@@ -149,15 +154,16 @@ const Login = () => {
                     label={"Họ tên"}  
                     value={payload.name} 
                     setValue={setPayload} 
-                    type={"name"}
+                    keyPayload={"name"}
                     setInvalidFields={setInvalidFields}
                     invalidFields={invalidFields}
+                    
                     />}
                 <InputForm 
                     label={"SỐ ĐIỆN THOẠI"}
                     value={payload.phone}
                     setValue={setPayload}
-                    type={"phone"}
+                    keyPayload={"phone"}
                     setInvalidFields={setInvalidFields}
                     invalidFields={invalidFields}
                     />
@@ -165,9 +171,10 @@ const Login = () => {
                     label={"MẬT KHẨU"}
                     value={payload.password} 
                     setValue={setPayload}
-                    type={"password"}
+                    keyPayload={"password"}
                     setInvalidFields={setInvalidFields}
                     invalidFields={invalidFields}
+                    type="password"
 
                 />
 

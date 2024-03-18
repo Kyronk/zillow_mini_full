@@ -17,7 +17,8 @@ export default {
                 'overlay-70': 'rgba(0,0,0,0.7)',
             },
             maxWidth: {
-                '600': "600px"
+                '600': "600px",
+                '1100': "1100px"
             },
             cursor: {
                 pointer: "pointer"

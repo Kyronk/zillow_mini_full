@@ -8,7 +8,10 @@ import cors from "cors";
 // const dbconn = require("./src/config/connectDatabase");
 
 import dbconn from "./src/config/connectDatabase";
-import initRoutes from "./src/routers"
+import initRoutes from "./src/routers";
+
+// import generateCode from "./src/ultis/generateCode";
+// console.log(generateCode(6))
 
 const app =  express();
 app.use(cors({
