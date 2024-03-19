@@ -7,13 +7,12 @@ const {GrNext,
     TbReportMoney,
     RiCrop2Line,
     FaBuilding,
-    IoIosSearch
-
+    IoIosSearch,
 } =  icons;
 
 const Search = () => {
     return (
-        <div className=' p-[10px] bg-[#febb02] rounded-lg flex-col lg:flex-row flex items-center justify-around gap-2'>
+        <div className='p-[10px] w-3/5 my-3 bg-[#febb02] rounded-lg flex-col lg:flex-row flex items-center justify-around gap-2'>
             <SearchItem 
                 text={"Phòng trọ, nhà trọ"}
                 iconAfter={<GrNext />}

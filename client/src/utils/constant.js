@@ -1,5 +1,6 @@
 export const path = {
     HOME: "/*",
+    HOME__PAGE: ":page", // không thể để / giá trị tuyện đối chỉ đươc để 1 lần
     LOGIN: "login",
     CHO_THUE_CAN_HO: 'cho-thue-can-ho',
     CHO_THUE_MAT_BANG: 'cho-thue-mat-bang',

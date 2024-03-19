@@ -5,6 +5,10 @@ import { TbReportMoney } from "react-icons/tb";
 import { RiCrop2Line } from "react-icons/ri";
 import { FaBuilding } from "react-icons/fa6";
 import { IoIosSearch } from "react-icons/io";
+import { FaStar } from "react-icons/fa";
+import { FaHeart } from "react-icons/fa";
+import { FaRegHeart } from "react-icons/fa";
+import { BsBookmarkStarFill } from "react-icons/bs";
 
 const icons = {
     CiCirclePlus,
@@ -14,7 +18,10 @@ const icons = {
     RiCrop2Line,
     FaBuilding,
     IoIosSearch,
-
+    FaStar,
+    FaHeart,
+    FaRegHeart,
+    BsBookmarkStarFill,
 }
 
 export default icons

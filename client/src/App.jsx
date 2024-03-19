@@ -7,13 +7,13 @@ import { path } from "./utils/constant";
 
 
 function App() {
-    const [count, setCount] = useState(0)
 
     return (
-        <div className='w-screen h-screen bg-primary'>
+        <div className=' bg-primary'>
             <Routes>
                 <Route path={path.HOME} element={<Home /> }>
                     <Route path="*" element={<HomePage />} />
+                    <Route path={path.HOME__PAGE} element={<HomePage />} />
                     <Route path={path.LOGIN} element={<Login /> } />
                     <Route path={path.CHO_THUE_CAN_HO} element={<RentalApartment />} />
                     <Route path={path.CHO_THUE_MAT_BANG} element={<RentalSpace />} />
