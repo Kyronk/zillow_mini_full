@@ -3,6 +3,9 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { v4 } from "uuid";
 
+import { dataPrice, dataArea } from "../ultis/data";
+import { getNumberFromString } from "../ultis/common";
+
 import generateCode from "../ultis/generateCode";
 import chothuecanho from "../../data/chothuephongtro.json";
 require("dotenv").config();
@@ -18,9 +21,13 @@ export const insertService = () => new Promise (async (resolve, reject) => {
             let postId = v4();
             let labelCode = generateCode(item?.header?.class?.classType);
             let attributesId = v4();
-            let userId = v4()
-            let imagesId = v4()
-            let overviewId = v4()
+            let userId = v4();
+            let imagesId = v4();
+            let overviewId = v4();
+            let desc = JSON.stringify(item?.mainContent?.content)
+            let currentArea = getNumberFromString(item?.header?.attributes?.acreage)
+            let currentPrice = getNumberFromString(item?.header?.attributes?.price)
+
 
 
             await db.Post.create({
@@ -32,13 +39,13 @@ export const insertService = () => new Promise (async (resolve, reject) => {
                 attributesId,
                 // categoryCode: cate.code,
                 categoryCode: "CTPT",
-                // description: desc,
-                description: JSON.stringify(item?.mainContent.content),
+                description: desc,
+                // description: JSON.stringify(item?.mainContent.content),
                 userId,
                 overviewId,
                 imagesId,
-                // areaCode: dataArea.find(area => area.max > currentArea && area.min <= currentArea)?.code,
-                // priceCode: dataPrice.find(area => area.max > currentPrice && area.min <= currentPrice)?.code,
+                areaCode: dataArea.find(area => area.max > currentArea && area.min <= currentArea)?.code,
+                priceCode: dataPrice.find(area => area.max > currentPrice && area.min <= currentPrice)?.code,
                 // provinceCode,
                 // priceNumber: getNumberFromStringV2(item?.header?.attributes?.price),
                 // areaNumber: getNumberFromStringV2(item?.header?.attributes?.acreage)

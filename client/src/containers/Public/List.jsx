@@ -1,22 +1,26 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { Button, Item } from "../../components";
 import { getPosts, getPostsLimit } from '../../store/actions/post';
 import { useDispatch, useSelector } from "react-redux";
 import { Pagination } from "./index";
 
 
-const List = () => {
+const List = ({page}) => {
 
+    const listRef = useRef();
     const dispatch = useDispatch();
+    // console.log(page)
     const { posts, count } = useSelector(state => state.post);
     useEffect(() => {
-        dispatch(getPostsLimit(0))
-    }, []);
+        let offset = page ? +page - 1 : 0;
+        dispatch(getPostsLimit(offset));
+        // listRef.current.scrollIntoView({behavior: "smooth", block: "start" });
+    }, [page]);
     // console.log(posts);
     // console.log(count);
 
     return (
-        <div className='w-full p-2 bg-white shadow-md rounded-md px-6'>
+        <div ref={listRef} className='w-full p-2 bg-white shadow-md rounded-md px-6'>
             <div className='flex items-center justify-between my-3'>
                 <h4 className='text-xl font-semibold'>Danh sách tin đăng</h4>
                 <span>Cập nhập: 12:09 25/08/2022</span>
@@ -42,6 +46,7 @@ const List = () => {
                             title={item?.title}
                             user={item?.user}
                             description={JSON.parse(item?.description)}
+                            id={item?.id}
                         />
                     )
                 })}

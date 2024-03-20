@@ -1,15 +1,17 @@
 import React, {memo, useState} from 'react'
 import icons from "../utils/icons";
+import { useNavigate, Link } from "react-router-dom";
+import { formatVietnameseToString } from '../utils/Common/formatVietnameseToString';
 
-const images = [
-    "https://pt123.cdn.static123.com/images/thumbs/900x600/fit/2022/07/19/6310726d-d075-4e35-b1cb-cf5616bf5212_1658240491.jpg",
-    "https://pt123.cdn.static123.com/images/thumbs/900x600/fit/2022/07/19/9c60836e-26b2-4737-a6c8-60cb5187fa4c_1658240485.jpg",
-    "https://pt123.cdn.static123.com/images/thumbs/900x600/fit/2022/07/19/716c753e-8e03-4cc8-9d09-e52ec19ce01b_1658240485.jpg",
-    "https://pt123.cdn.static123.com/images/thumbs/900x600/fit/2022/07/19/400e7ebd-5d88-48af-8599-0d074a1ee014_1658240494.jpg",
-    "https://pt123.cdn.static123.com/images/thumbs/900x600/fit/2022/07/19/1379ebdf-eda5-4ef8-bb22-7da1d19551f2_1658240490.jpg",
-    "https://pt123.cdn.static123.com/images/thumbs/900x600/fit/2022/07/19/6310726d-d075-4e35-b1cb-cf5616bf5212_1658240491.jpg",
-    "https://pt123.cdn.static123.com/images/thumbs/900x600/fit/2022/07/19/9c60836e-26b2-4737-a6c8-60cb5187fa4c_1658240485.jpg"
-];
+// const images = [
+//     "https://pt123.cdn.static123.com/images/thumbs/900x600/fit/2022/07/19/6310726d-d075-4e35-b1cb-cf5616bf5212_1658240491.jpg",
+//     "https://pt123.cdn.static123.com/images/thumbs/900x600/fit/2022/07/19/9c60836e-26b2-4737-a6c8-60cb5187fa4c_1658240485.jpg",
+//     "https://pt123.cdn.static123.com/images/thumbs/900x600/fit/2022/07/19/716c753e-8e03-4cc8-9d09-e52ec19ce01b_1658240485.jpg",
+//     "https://pt123.cdn.static123.com/images/thumbs/900x600/fit/2022/07/19/400e7ebd-5d88-48af-8599-0d074a1ee014_1658240494.jpg",
+//     "https://pt123.cdn.static123.com/images/thumbs/900x600/fit/2022/07/19/1379ebdf-eda5-4ef8-bb22-7da1d19551f2_1658240490.jpg",
+//     "https://pt123.cdn.static123.com/images/thumbs/900x600/fit/2022/07/19/6310726d-d075-4e35-b1cb-cf5616bf5212_1658240491.jpg",
+//     "https://pt123.cdn.static123.com/images/thumbs/900x600/fit/2022/07/19/9c60836e-26b2-4737-a6c8-60cb5187fa4c_1658240485.jpg"
+// ];
 
 const { FaStar, FaHeart, FaRegHeart, BsBookmarkStarFill } = icons;
 
@@ -22,17 +24,29 @@ const Item = ({
     star,
     description,
     attributes,
-    address
+    address,
+    id
 }) => {
     
     const [ isHoverHeart, setIsHoverHeart ] = useState(false);
+    const navigate = useNavigate();
     // console.log(isHoverHeart);
     // console.log(images);
 
+    const handleStar = (star) => {
+        let stars = [];
+        for ( let i = 1; i <= +star ; i++) stars.push(<FaStar className='star-item' size={18} color='yellow'/>)
+        return stars;
+    }
+
+
+    // console.log(star)
 
     return (
         <div className='w-full flex border-t border-orange-600 py-4'>
-            <div className='w-2/5 flex flex-wrap gap-[2px] items-center relative cursor-pointer'>
+            <Link
+                to={`chi-tiet/${formatVietnameseToString(title)}/${id}`}
+                className='w-2/5 flex flex-wrap gap-[2px] items-center relative cursor-pointer'>
                 {/* <div className='flex gap-1'> */}
                     {/* <img src={images[0]} alt="preview" className='w-[140px] h-[120px] object-cover' />
                     <img src={images[1]} alt="preview" className='w-[140px] h-[120px] object-cover' />
@@ -53,16 +67,23 @@ const Item = ({
                         {isHoverHeart ? <FaHeart size={24} color="red"/> : <FaRegHeart size={26} />}
                     </span>
                 {/* </div> */}
-            </div>
+            </Link>
 
             <div className='w-3/5'>
                 <div className='flex justify-between gap-4 w-full'>
                     <div className='text-red-600 font-medium'>
+                        {handleStar(+star).length > 0 && handleStar(+star).map((star, number) => {
+                            return (
+                                <span key={number}>{star}</span>
+                            )
+                        })}
+
+                        {/* <FaStar className='star-item' size={18} color='yellow'/>
                         <FaStar className='star-item' size={18} color='yellow'/>
                         <FaStar className='star-item' size={18} color='yellow'/>
                         <FaStar className='star-item' size={18} color='yellow'/>
-                        <FaStar className='star-item' size={18} color='yellow'/>
-                        <FaStar className='star-item' size={18} color='yellow'/>
+                        <FaStar className='star-item' size={18} color='yellow'/> */}
+
                         {/* CHO THUÊ CĂN HỘ HOẶC VĂN PHÒNG LÀM VIỆC */}
                         {title}
                     </div>

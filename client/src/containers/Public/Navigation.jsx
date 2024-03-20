@@ -4,6 +4,9 @@ import { NavLink } from 'react-router-dom';
 import { apiGetCategory } from '../../services/category';
 import { formatVietnameseToString } from '../../utils/Common/formatVietnameseToString';
 
+import { useDispatch, useSelector } from "react-redux";
+import * as actions from "../../store/actions";
+
 // const nav = [
 //     {name: "Trang chủ", path: "home"},
 //     {name: "Cho thuê phòng trọ", path: "cho-thue-phong-tro"},
@@ -17,16 +20,20 @@ const active = "hover:bg-secondary2 h-full px-4 flex items-center bg-secondary2"
 
 
 const Navigation = () => {
+    
+    const { categories } = useSelector(state => state.app);
+    // const [categories, setCategories ] = useState([]);
+    const dispatch = useDispatch();
 
-    const [categories, setCategories ] = useState([]);
     useEffect(() => {
-        const fetchCategories = async () => {
-            const response = await apiGetCategory();
-            if( response?.data.err === 0) {
-                setCategories(response.data.response);
-            }
-        }
-        fetchCategories()
+        // const fetchCategories = async () => {
+        //     const response = await apiGetCategory();
+        //     if( response?.data.err === 0) {
+        //         setCategories(response.data.response);
+        //     }
+        // }
+        // fetchCategories();
+        dispatch(actions.getCategories())
     }, []);
 
 

@@ -1,16 +1,20 @@
 import React from 'react'
 // import { Search } from './index';
 import { text } from "../../utils/constant";
-import { Province } from '../../components';
-import { List, Pagination } from "./index";
+import { ItemSidebar,Province } from '../../components';
+import {  List, Pagination } from "./index";
 // import { location } from '../../utils/constant';
 import { useSearchParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 
 const HomePage = () => {
 
     const [ params ] = useSearchParams();
     // console.log(params.get("page"));
+    const { categories } = useSelector(state => state.app);
+    console.log(categories)
+
 
     return (
         <div className='border border-red-500 w-full flex flex-col gap-3'>
@@ -24,9 +28,11 @@ const HomePage = () => {
 
             <div className='w-full flex gap-4'>
                 <div className='w-[70%]'>
-                    <List />
+                    <List 
+                        page={params.get("page")}
+                    />
                     <Pagination 
-                        number={params.get("page")}
+                        page={params.get("page")}
                     />
 
                     <div className='h-[500px]'>
@@ -34,8 +40,18 @@ const HomePage = () => {
                     </div>
                 </div>
 
-                <div className='w-[30%] border border-green-500'>
-                    Side bar
+                <div className='w-[30%] border border-green-500 flex flex-col gap-4 justify-start items-center'>
+                    <ItemSidebar 
+                        content={categories}
+                        title={"Danh sách thuê"}
+                    />
+                    <ItemSidebar 
+                        title={"Xem theo giá"}
+                    />
+                    <ItemSidebar 
+                        title={"Xem theo diện tích"}
+                    />
+
                 </div>
             </div>
             
