@@ -7,7 +7,7 @@ import { dataPrice, dataArea } from "../ultis/data";
 import { getNumberFromString } from "../ultis/common";
 
 import generateCode from "../ultis/generateCode";
-import chothuecanho from "../../data/chothuephongtro.json";
+import chothuecanho from "../../data/nhachothue.json";
 require("dotenv").config();
 
 const dataBody = chothuecanho.body;
@@ -119,3 +119,24 @@ export const insertService = () => new Promise (async (resolve, reject) => {
     }
 });
 
+export const createPricesAndAreas = () => new Promise((resolve, reject) => {
+    try {
+        dataPrice.forEach(async (item, index) => {
+            await db.Price.create({
+                code: item.code,
+                value: item.value,
+                order: index + 1
+            })
+        })
+        dataArea.forEach(async (item, index) => {
+            await db.Area.create({
+                code: item.code,
+                value: item.value,
+                order: index + 1
+            })
+        })
+        resolve('OK')
+    } catch (err) {
+        reject(err)
+    }
+})

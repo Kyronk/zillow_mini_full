@@ -32,12 +32,13 @@ export const getPostService = () => new Promise( async (resolve, reject) => {
 
 
 // get Post limit
-export const getPostLimitService = (offset) => new Promise( async (resolve, reject) => {
+export const getPostLimitService = (page, query) => new Promise( async (resolve, reject) => {
     try {
         const response = await db.Post.findAndCountAll({
+            where: query,
             raw: true,
             nest: true,
-            offset: offset * (+process.env.LIMIT) || 0,
+            offset: page * (+process.env.LIMIT) || 0,
             limit: +process.env.LIMIT,
             include: [
                 { model: db.Image, as: "images", attributes: ["image"]},

@@ -13,7 +13,7 @@ const List = ({page}) => {
     const { posts, count } = useSelector(state => state.post);
     useEffect(() => {
         let offset = page ? +page - 1 : 0;
-        dispatch(getPostsLimit(offset));
+        dispatch(getPostsLimit({offset, priceCode: "3U5N"}));
         // listRef.current.scrollIntoView({behavior: "smooth", block: "start" });
     }, [page]);
     // console.log(posts);
