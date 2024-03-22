@@ -6,7 +6,8 @@ const Button = ({
     bgColor,
     IcAfter,
     onClick,
-    fullWidth
+    fullWidth,
+    px
 }) => {
     // console.log("re render")
 
@@ -14,7 +15,7 @@ const Button = ({
     return (
         <button 
             type='button'
-            className={`py-2 px-4 ${textColor} ${bgColor} ${fullWidth && "w-full"} outline-none rounded-md hover:underline flex justify-center items-center gap-1`}
+            className={`py-2 ${px ? px : "px-2"} ${textColor} ${bgColor} ${fullWidth && "w-full"} outline-none rounded-md hover:underline flex justify-center items-center gap-1`}
             onClick={onClick}
         >
             <span>{text}</span> 

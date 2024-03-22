@@ -50,11 +50,11 @@ const ItemSidebar = ({title, content, isDouble, type}) => {
     };
     // console.log(formatContent());
     const handleFilterPost = (code) => {
-        dispatch(actions.getPostsLimit({ [type]: code}));
+        // dispatch(actions.getPostsLimit({ [type]: code}));
         navigate({
             pathname: "/",
             search: createSearchParams({
-                type: code
+                [type]: code
             }).toString()
         })  
     }

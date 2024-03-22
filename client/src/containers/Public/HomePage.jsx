@@ -1,10 +1,8 @@
 import React, { useEffect } from 'react'
-// import { Search } from './index';
 import { text } from "../../utils/constant";
 import { ItemSidebar,Province } from '../../components';
 import {  List, Pagination } from "./index";
-// import { location } from '../../utils/constant';
-import { useSearchParams } from "react-router-dom";
+// import { useSearchParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import * as actions from "../../store/actions";
 
@@ -13,7 +11,6 @@ const HomePage = () => {
 
     const dispatch = useDispatch();
 
-    const [ params ] = useSearchParams();
     // console.log(params.get("page"));
     const { categories, prices, areas } = useSelector(state => state.app);
     // console.log(categories)
@@ -36,15 +33,12 @@ const HomePage = () => {
             <div className='w-full flex gap-4'>
                 <div className='w-[70%]'>
                     <List 
-                        page={params.get("page")}
+                        // page={params.get("page")}
                     />
                     <Pagination 
-                        page={params.get("page")}
+                        // page={params.get("page")}
                     />
-
-                    <div className='h-[500px]'>
-
-                    </div>
+    
                 </div>
 
                 <div className='w-[30%] border border-green-500 flex flex-col gap-4 justify-start items-center'>
@@ -59,6 +53,7 @@ const HomePage = () => {
                         title={"Xem theo giá"}
                     />
                     <ItemSidebar 
+                        type="areaCode"
                         isDouble={true}
                         content={areas}
                         title={"Xem theo diện tích"}

@@ -26,9 +26,9 @@ export const getPosts = () => async (dispatch) => {
 };
 
 export const getPostsLimit = (query) => async (dispatch) => {
+    console.log(query);
     try {
         const response = await apiGetPostLimit(query);
-        // console.log(response);
         if (response?.data.err === 0) {
             dispatch({
                 type: actionTypes.GET_POSTS_LIMIT,

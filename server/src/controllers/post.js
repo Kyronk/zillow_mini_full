@@ -16,10 +16,10 @@ export const getPosts = async (req, res) => {
 
 
 export const getPostsLimit = async (req, res) => {
-    const { offset, ...query } = req.query;
+    const { page, ...query } = req.query;
     try {
         // if (!offset)
-        const response = await postService.getPostLimitService(offset, query);
+        const response = await postService.getPostLimitService(page, query);
         return res.status(200).json(response);
 
 

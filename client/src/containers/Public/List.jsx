@@ -3,21 +3,46 @@ import { Button, Item } from "../../components";
 import { getPosts, getPostsLimit } from '../../store/actions/post';
 import { useDispatch, useSelector } from "react-redux";
 import { Pagination } from "./index";
+import { useSearchParams } from 'react-router-dom';
 
 
-const List = ({page}) => {
-
+const List = () => {
+    const [ searchParams ] = useSearchParams(); 
     const listRef = useRef();
     const dispatch = useDispatch();
     // console.log(page)
     const { posts, count } = useSelector(state => state.post);
+    // useEffect(() => {
+    //     let page = searchParams.get("page");
+    //     let offset = page ? +page - 1 : 0;
+    //     dispatch(getPostsLimit({offset}));
+    // }, [page]);
+    // useEffect(() => {
+    //     let params = []
+    //     for (let entry of searchParams.entries()) {
+    //         params.push(entry);
+    //     }
+    //     let searchParamsObject = {}
+    //     params?.forEach(i => {
+    //         if (Object.keys(searchParamsObject)?.some(item => item === i[0])) {
+    //             searchParamsObject[i[0]] = [...searchParamsObject[i[0]], i[1]]
+    //         } else {
+    //             searchParamsObject = { ...searchParamsObject, [i[0]]: [i[1]] }
+    //         }
+    //     })
+    //     if (categoryCode) searchParamsObject.categoryCode = categoryCode
+    //     dispatch(getPostsLimit(searchParamsObject))
+    // }, [searchParams, categoryCode])
     useEffect(() => {
-        let offset = page ? +page - 1 : 0;
-        dispatch(getPostsLimit({offset, priceCode: "3U5N"}));
-        // listRef.current.scrollIntoView({behavior: "smooth", block: "start" });
-    }, [page]);
-    // console.log(posts);
-    // console.log(count);
+        let params = [];
+        for (let entry of searchParams.entries()) {
+            params.push(entry);
+        }
+        let searchParamsObject = {};
+        params?.map(i => { searchParamsObject = { ...searchParamsObject, [i[0]]: i[1]}});
+        dispatch(getPostsLimit(searchParamsObject));
+    }, [searchParams])
+
 
     return (
         <div ref={listRef} className='w-full p-2 bg-white shadow-md rounded-md px-6'>
