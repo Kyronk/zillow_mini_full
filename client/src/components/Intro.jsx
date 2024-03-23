@@ -12,7 +12,7 @@ const star = [1,2,3,4,6];
 const Intro = () => {
 
     const { categories } = useSelector(state => state.app);
-    console.log(categories)
+    // console.log(categories)
 
     return (
         <div className='border w-3/5 bg-white rounded-md shadow-md p-4 gap-4 flex-col flex justify-center items-center'>
