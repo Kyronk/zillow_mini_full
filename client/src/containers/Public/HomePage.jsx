@@ -14,10 +14,10 @@ const HomePage = () => {
     // console.log(params.get("page"));
     const { categories, prices, areas } = useSelector(state => state.app);
     // console.log(categories)
-    useEffect(() => {
-        dispatch(actions.getPrice());
-        dispatch(actions.getArea());
-    }, []);
+    // useEffect(() => {
+    //     dispatch(actions.getPrice());
+    //     dispatch(actions.getArea());
+    // }, []);
     // console.log(prices);
 
     return (

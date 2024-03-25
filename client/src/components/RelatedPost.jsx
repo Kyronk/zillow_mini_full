@@ -11,7 +11,7 @@ const RelatedPost = () => {
     useEffect(() => {
         dispatch(actions.getNewPosts());
     }, []);
-    console.log(newPosts);
+    // console.log(newPosts);
     
     return (
         <div className='w-full bg-white rounded-md p-4'>

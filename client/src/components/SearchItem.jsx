@@ -1,4 +1,6 @@
 import React from 'react'
+// import { Modal  } from "./Modal";
+
 
 const SearchItem = ({
     iconBefore,

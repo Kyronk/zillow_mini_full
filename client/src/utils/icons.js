@@ -9,6 +9,7 @@ import { FaStar } from "react-icons/fa";
 import { FaHeart } from "react-icons/fa";
 import { FaRegHeart } from "react-icons/fa";
 import { BsBookmarkStarFill } from "react-icons/bs";
+import { GrLinkPrevious } from "react-icons/gr";
 
 const icons = {
     CiCirclePlus,
@@ -22,6 +23,7 @@ const icons = {
     FaHeart,
     FaRegHeart,
     BsBookmarkStarFill,
+    GrLinkPrevious,
 }
 
 export default icons

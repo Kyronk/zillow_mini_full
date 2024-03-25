@@ -6,7 +6,7 @@ import { Pagination } from "./index";
 import { useSearchParams } from 'react-router-dom';
 
 
-const List = () => {
+const List = ({categoryCode}) => {
     const [ searchParams ] = useSearchParams(); 
     const listRef = useRef();
     const dispatch = useDispatch();
@@ -40,8 +40,11 @@ const List = () => {
         }
         let searchParamsObject = {};
         params?.map(i => { searchParamsObject = { ...searchParamsObject, [i[0]]: i[1]}});
+        if(categoryCode) searchParamsObject.categoryCode = categoryCode;
+        // console.log(searchParamsObject);
         dispatch(getPostsLimit(searchParamsObject));
-    }, [searchParams])
+    }, [searchParams, categoryCode])
+    // console.log(categoryCode)
 
 
     return (
