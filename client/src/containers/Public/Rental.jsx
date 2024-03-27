@@ -31,7 +31,7 @@ const Rental = () => {
         }
     }, [location]);
 
-    console.log(categoryCurrent);
+    // console.log(categoryCurrent);
 
 
 

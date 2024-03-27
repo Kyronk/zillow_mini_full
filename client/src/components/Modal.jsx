@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import icon from "../utils/icons";
 import { FaChessKing } from 'react-icons/fa6';
+import { getNumbersPrice, getNumbersArea } from '../utils/Common/getNumbers';
 
 const { GrLinkPrevious } = icon;
 
@@ -8,29 +9,34 @@ const Modal = ({
     setIsShowModal,
     content,
     name,
+    handleSubmit,
+    queries,
 }) => {
 
     const [ persent1, setPersent1 ] = useState(0);
     const [ persent2, setPersent2 ] = useState(100);
+    const [ activedEl, setActivedEl ] = useState("");
 
     useEffect(() => {
         const activatedTrackEl = document.getElementById("track-active");
-        if (persent2 <= persent1) {
-            activatedTrackEl.style.left = `${persent2}%`;
-            activatedTrackEl.style.right = `${100 - persent1}%`;
-        } else {
-            activatedTrackEl.style.left = `${persent1}%`;
-            activatedTrackEl.style.right = `${100 - persent2}%`;
+        if(activatedTrackEl) {
+            if (persent2 <= persent1) {
+                activatedTrackEl.style.left = `${persent2}%`;
+                activatedTrackEl.style.right = `${100 - persent1}%`;
+            } else {
+                activatedTrackEl.style.left = `${persent1}%`;
+                activatedTrackEl.style.right = `${100 - persent2}%`;
+            }
         }
 
     }, [persent1, persent2]);
 
-    const handleClickStack = (e) => {
+    const handleClickTrack = (e, value) => {
         // const activatedTrackEl = document.getElementById("track-active");
         // e.stopPropagation();
         const stackEl = document.getElementById("track");
         const stackRect = stackEl.getBoundingClientRect();
-        let percent = Math.round((e.clientX - stackRect.left) * 100/ stackRect.width);
+        let percent = value ? value : Math.round((e.clientX - stackRect.left) * 100/ stackRect.width);
         if (Math.abs(percent - persent1) <= (Math.abs(percent - persent2))) {
             // activatedTrackEl.style.left = `${persent1}%`;
             setPersent1(percent);
@@ -41,7 +47,7 @@ const Modal = ({
         // console.log(stackEl);
     };
 
-    const convert100to15 = (percent) => {
+    const convert100toTarget = (percent) => {
         // logic code 
         // ở đây có các mức giá từ 0 đến 15tr
         // giá trị lấy là 0 0.5 1 1.5 2 2.5 .... 15
@@ -52,8 +58,56 @@ const Modal = ({
         // 10% => 3
         // 9% => 2.7 * 10 => 27 / 5 dư 2 => 6 * 25 = 30 / 10 = 3
 
-        return percent * 0.3
-    }
+        // return (Math.ceil(Math.round((percent * 1.5)) / 5) * 5) / 10;
+        // let target = name === "price" ? 1.5 : name === "area" ? 9 : 1 ;
+        // return (Math.ceil(Math.round((percent * target)) / 5) * 5) / 10;
+        return name === "price"
+            ? (Math.ceil(Math.round((percent * 1.5)) / 5) * 5) / 10
+            : name === "area"
+                ? (Math.ceil(Math.round((percent * 0.9)) / 5 ) * 5)
+                : 0 ;
+
+    };
+    const convertTo100 = (percent) => {
+        // return Math.round((percent/15) * 100);
+        let target = name === "price" ? 15 : name === "area" ? 90 : 1 ;
+        return Math.round((percent / target) * 100);
+    };
+    
+    // const getNumbersPrice = (string) => string.split(" ").map(item => +item).filter(item => !item === false);    
+    // const getNumbersPriceArea = (string) => string.split(" ").map(item => +item.match(/\d+/)).filter(item => item !== 0);
+
+    const handleActive  = (code, value) => {
+        setActivedEl(code);
+        // let arrMaxMin = getNumbersPrice(value);
+        let arrMaxMin = name === "price" ? getNumbersPrice(value) : getNumbersArea(value)
+        if (arrMaxMin.length === 1) {
+            if (arrMaxMin[0] === 1) {
+                setPersent1(0);
+                setPersent2(convertTo100(1));
+            }
+
+            if (arrMaxMin[0] === 20) {
+                setPersent1(0);
+                setPersent2(convertTo100(20))
+            }
+
+            if (arrMaxMin[0] === 15 || arrMaxMin[0] === 90) {
+                setPersent1(100);
+                setPersent2(100);
+            }
+        }
+        if (arrMaxMin.length === 2) {
+            setPersent1(convertTo100(arrMaxMin[0]));
+            setPersent2(convertTo100(arrMaxMin[1]));
+        }
+    };
+
+    // const handleSubmit = () => {
+    //     console.log("star", convert100toTarget(persent1));
+    //     console.log("end", convert100toTarget(persent2));
+    // }
+
 
 
 
@@ -62,7 +116,7 @@ const Modal = ({
             // chỗ này là thằng cha nên, bắm vô chỗ blur là nó tắt modal
             onClick={(e) => {
                 e.stopPropagation(); // cái này có cũng đc không có cũng được
-                setIsShowModal(false)
+                setIsShowModal(false);
             }}
             className='fixed top-0 left-0 right-0 bottom-0 bg-overlay-70 z-20 flex justify-center items-center'
         >
@@ -71,7 +125,7 @@ const Modal = ({
                     e.stopPropagation(); // cái này là thằng con (phần content) bắm vào không được phép tắt
                     setIsShowModal(true); // giữ nguyên trạng thái của modal show
                 }}
-                className='w-1/3 bg-white rounded-md'>
+                className='w-2/5 bg-white rounded-md'>
                 <div className='h-[45px] px-4 flex items-center border-b border-gray-200'>
                     <span
                         className='hover:text-red-600 cursor-pointer'
@@ -89,7 +143,15 @@ const Modal = ({
                         {content?.map(item => {
                             return (
                                 <span key={item.code} className="py-2 flex gap-2 items-center border-b border-gray-200">
-                                    <input type="radio" name={name} id={item.code} value={item.code} />
+                                    <input 
+                                        type="radio" 
+                                        name={name} 
+                                        id={item.code} 
+                                        value={item.code}  
+                                        checked={item.code === queries[`${name}Code`] ? true : false}
+                                        onClick={(e) => handleSubmit(e, { [name]: item.value, [`${name}Code`]: item.code})} 
+                                        
+                                        />
                                     <label htmlFor={item.code}>{item.value}</label>
                                 </span>
                             )
@@ -98,14 +160,31 @@ const Modal = ({
                     </div>
                 }
 
-                {(name === "price" || name === "area") && <div className='p-12'>
+                {(name === "price" || name === "area") && 
+                <div className='p-12 py-20'>
                     <div className='flex flex-col items-center justify-center relative'>
                         <div className='z-30 absolute top-[-48px] font-bold text-xl text-orange-600'>
                             {/* Từ 0 - 15 triệu + */}
-                            {`Từ ${persent1 <= persent2 ? persent1 : persent2} - ${persent2 >= persent1 ?  persent2 : persent1} Triệu`}
+                            {/* {`${(persent1 === 100 && persent2 === 100) ? "Trên" : "Từ"} ${persent1 <= persent2 
+                                ? convert100toTarget(persent1) 
+                                : convert100toTarget(persent2)} - ${persent2 >= persent1 
+                                ?  convert100toTarget(persent2) 
+                                : convert100toTarget(persent1)} ${name === "price" 
+                                    ? "triệu" 
+                                    : "m2"}`} */}
+
+                            {(persent1 === 100 && persent2 === 100)
+                                ? `Trên ${convert100toTarget(persent1)} ${name === 'price' ? 'triệu' : 'm2'} +`
+                                : `Từ ${persent1 <= persent2
+                                    ? convert100toTarget(persent1)
+                                    : convert100toTarget(persent2)} - ${persent2 >= persent1
+                                        ? convert100toTarget(persent2)
+                                        : convert100toTarget(persent1)} ${name === 'price'
+                                            ? 'triệu'
+                                            : 'm2'}`}
                         </div>
-                        <div  onClick={handleClickStack} id="track" className='slider-track h-[5px] absolute top-0 bottom-0 w-full bg-gray-300 rounded-full'></div>
-                        <div onClick={handleClickStack} id="track-active" className='slider-track-active h-[5px] absolute top-0 bottom-0  bg-orange-600 rounded-full'></div>
+                        <div  onClick={handleClickTrack} id="track" className='slider-track h-[5px] absolute top-0 bottom-0 w-full bg-gray-300 rounded-full'></div>
+                        <div onClick={handleClickTrack} id="track-active" className='slider-track-active h-[5px] absolute top-0 bottom-0  bg-orange-600 rounded-full'></div>
                         
                         <input 
                             max="100"
@@ -114,7 +193,10 @@ const Modal = ({
                             type="range"
                             value={persent1}
                             className='w-full appearance-none pointer-events-none absolute top-0 bottom-0'
-                            onChange={(e) => setPersent1(+e.target.value)}
+                            onChange={(e) => {
+                                setPersent1(+e.target.value);
+                                activedEl && setActivedEl("");
+                            }}
                         />
 
                         <input 
@@ -124,20 +206,69 @@ const Modal = ({
                             type="range"
                             value={persent2}
                             className='w-full appearance-none pointer-events-none absolute top-0 bottom-0'
-                            onChange={(e) => setPersent2(+e.target.value)}
+                            onChange={(e) => {
+                                setPersent2(+e.target.value);
+                                activedEl && setActivedEl("");
+                                
+                            }}
                         />
 
                         <div className='absolute z-30 top-6 left-0 right-0 flex justify-between items-center'>
-                            <span>0</span>
-                            <span className='mr-[-12px]'>15 triệu +</span>
+                            <span
+                                className='cursor-pointer'
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleClickTrack(e, 0);
+                                }}
+                            >
+                                {name === "price" ? 0 : name === "area" ?  0: ""}
+                            </span>
+                            <span 
+                                className='mr-[-12px] cursor-pointer'
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleClickTrack(e, 100);
+                                }}
+                                >
+                                    {name === "price" ? "15 Triệu +" : name === "area" ? "Trên 90 m2" : ""}
+                                </span>
                         </div>
 
+                    </div>
+                        
+                    {/*  default value */}
+                    <div className='mt-24'>
+                        <h4 className='font-medium mb-4'>Chọn nhanh:</h4>
+                        <div className='flex gap-2 items-center flex-wrap w-full'>
+                            {content?.map(item => {
+                                return (
+                                    <button
+                                        key={item.code}
+                                        // onClick={() => setActivedEl(item.code)}
+                                        onClick={() => handleActive(item.code, item.value)}
+                                        className={`px-4 py-2 bg-gray-200 rounded-md cursor-pointer ${item.code === activedEl ? "bg-blue-500 text-white": ""}`}
+                                    >
+                                        {item.value}
+                                    </button>
+                                )
+                            })}
+                        </div>
                     </div>
                         
                 </div>
 
                 }
+                {(name === "price" || name === "area") && 
+                    <button
+                        type='button'
+                        className='w-full bg-[#FFA500] py-2 font-medium rounded-bl-md rounded-br-md'
+                        onClick={handleSubmit}
+                    >
+                        ÁP DỤNG
+                    </button>
+                }
             </div>
+
         </div>
     )
 }
