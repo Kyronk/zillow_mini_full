@@ -1,8 +1,10 @@
 import React, { useCallback, useState }  from 'react'
 import { SearchItem, Modal } from '../../components'
 import icons from "../../utils/icons";
-import { useSelector } from "react-redux";
-import { getCodePrice, getCodeArea } from '../../utils/Common/getCode';
+import { useSelector, useDispatch } from "react-redux";
+// import { getCodePrice, getCodeArea } from '../../utils/Common/getCode';
+// import { getCodes, getCodesArea } from '../../utils/Common/getCode';
+import * as actions from "../../store/actions";
 
 const {
     GrNext, 
@@ -13,23 +15,27 @@ const {
     IoIosSearch,
 } =  icons;
 
-const Search = ({
+const Search = ({ }) => {
 
-}) => {
+    const dispatch = useDispatch();
 
     const { provinces, areas, prices, categories } = useSelector(state =>  state.app);
     const [ isShowModal, setIsShowModal ] = useState(false);
     const [ name, setName ] = useState("");
     const [ content, setContent ] = useState([]);
     const [ queries, setQueries ] = useState({});
+    const [ arrMinMax, setArrMinMax ] = useState({});
+
+    // console.log(getCodesArea([10, 40], areas));
+
     // const [ texts, setTexts ] = useState({
     //     category: "",
     //     province: "",
     //     price: "",
     //     area: "",
     // })
-    console.log(getCodePrice(prices));
-    console.log(getCodeArea(areas));
+    // console.log(getCodePrice(prices));
+    // console.log(getCodeArea(areas));
 
 
     const handleShowModal = ( content, name, defaultText ) => {
@@ -40,14 +46,25 @@ const Search = ({
     };
 
     
-    const handleSubmit = useCallback((e, query) => {
-        e.stopPropagation();
+    const handleSubmit = useCallback((e, query, arrMaxMin) => {
+        // e.stopPropagation();
+        e.stopPropagation()
         setQueries(prev => ({...prev, ...query}));
         setIsShowModal(false);
+        arrMaxMin && setArrMinMax(prev => ({...prev, ...arrMaxMin}))
     }, [isShowModal, queries]);
 
     // console.log(isShowModal);
-    console.log(queries);
+    // console.log(queries);
+
+    const handleSearch = () => {
+        const queryCodes = Object.entries(queries).filter(item => item[0].includes("Code"));
+        let queryCodesObj = {};
+        queryCodes.forEach(item => { queryCodesObj[item[0]] = item[1]});
+        
+        // console.log(queryCodesObj);
+        dispatch(actions.getPostsLimit(queryCodesObj));
+    }
 
     return (
         <>
@@ -91,6 +108,7 @@ const Search = ({
 
                 <button
                     type="button"
+                    onClick={handleSearch}
                     className='outline-none py-2 px-4 w-full flex-1 bg-secondary1 text-[13.3px] flex items-center justify-center gap-2 text-white font-medium'
                 >
                     <IoIosSearch /> 
@@ -100,6 +118,7 @@ const Search = ({
 
             {isShowModal && 
                     <Modal
+                        arrMinMax={arrMinMax}
                         handleSubmit={handleSubmit}
                         content={content}
                         name={name}

@@ -1,5 +1,3 @@
-// import axios from "axios";
-
 import axiosConfig from "../axiosConfig";
 
 export const apiGetPost = () => new Promise(async (resolve, reject) => {

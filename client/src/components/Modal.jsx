@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, memo } from 'react'
 import icon from "../utils/icons";
 import { FaChessKing } from 'react-icons/fa6';
 import { getNumbersPrice, getNumbersArea } from '../utils/Common/getNumbers';
+import { getCodes, getCodesArea } from '../utils/Common/getCode';
 
 const { GrLinkPrevious } = icon;
 
@@ -11,10 +12,31 @@ const Modal = ({
     name,
     handleSubmit,
     queries,
+    arrMinMax,
+
 }) => {
 
-    const [ persent1, setPersent1 ] = useState(0);
-    const [ persent2, setPersent2 ] = useState(100);
+    // console.log(arrMinMax)
+
+    // const [ persent1, setPersent1 ] = useState(arrMinMax[0] || 0);
+    // const [ persent2, setPersent2 ] = useState(arrMinMax[1] || 100);
+    const [persent1, setPersent1] = useState(name === 'price' && arrMinMax?.priceArr
+        ? arrMinMax?.priceArr[0]
+        : name === 'area' && arrMinMax?.areaArr ? arrMinMax?.areaArr[0] : 0);
+
+    const [persent2, setPersent2] = useState(name === 'price' && arrMinMax?.priceArr
+        ? arrMinMax?.priceArr[1]
+        : name === 'area' && arrMinMax?.areaArr ? arrMinMax?.areaArr[1] : 100);
+
+    // const [ persent1, setPersent1 ] = useState(name === 'price'  ? arrMinMax?.priceArr[0] : name === 'area'  ? arrMinMax?.areaArr[0] : 0);
+
+    // const [ persent2, setPersent2 ] = useState(name === 'price' ? arrMinMax?.priceArr[1] : name === 'area' ? arrMinMax?.areaArr[1] : 100);
+    
+    // const [ persent1, setPersent1 ] = useState(name === "price" && arrMinMax?.price ? arrMinMax?.priceArr[0] : name === "area" && arrMinMax?.area ? arrMinMax?.areaArr[0] : 0);
+    // const [ persent2, setPersent2 ] = useState(name === "price"  ? arrMinMax?.priceArr[1] : name === "area" ? arrMinMax?.areaArr[1] : 100);
+    // const [ persent1, setPersent1] = useState(0);
+    // const [ persent2, setPersent2] = useState(100);
+
     const [ activedEl, setActivedEl ] = useState("");
 
     useEffect(() => {
@@ -30,6 +52,8 @@ const Modal = ({
         }
 
     }, [persent1, persent2]);
+
+
 
     const handleClickTrack = (e, value) => {
         // const activatedTrackEl = document.getElementById("track-active");
@@ -103,11 +127,25 @@ const Modal = ({
         }
     };
 
-    // const handleSubmit = () => {
-    //     console.log("star", convert100toTarget(persent1));
-    //     console.log("end", convert100toTarget(persent2));
-    // }
+    const handleBeforeSubmit = (e) => {
 
+        let min = persent1 <= persent2 ? persent1 : persent2;
+        let max = persent1 <= persent2 ? persent2 : persent1;
+        let arrMinMax = [convert100toTarget(min), convert100toTarget(max)];
+
+        const gaps = name === 'price'
+            // ? getCodes([convert100toTarget(persent1), convert100toTarget(persent2)], content)
+            ? getCodes(arrMinMax, content)
+            : name === "area" ? getCodesArea(arrMinMax, content) : []
+        
+
+        handleSubmit(e, {
+            [`${name}Code`] : gaps.map(item => item.code),
+            [name]: `Từ ${convert100toTarget(min)} - ${convert100toTarget(max)} ${name === "price" ? "Triệu" : "m2" }` 
+        }, {
+            [`${name}Arr`]: [min, max]
+        });
+    }
 
 
 
@@ -125,7 +163,7 @@ const Modal = ({
                     e.stopPropagation(); // cái này là thằng con (phần content) bắm vào không được phép tắt
                     setIsShowModal(true); // giữ nguyên trạng thái của modal show
                 }}
-                className='w-2/5 bg-white rounded-md'>
+                className='w-2/5 h-[500px] bg-white rounded-md relative'>
                 <div className='h-[45px] px-4 flex items-center border-b border-gray-200'>
                     <span
                         className='hover:text-red-600 cursor-pointer'
@@ -148,8 +186,9 @@ const Modal = ({
                                         name={name} 
                                         id={item.code} 
                                         value={item.code}  
+                                        //  checked đi với onChange ở type radio
                                         checked={item.code === queries[`${name}Code`] ? true : false}
-                                        onClick={(e) => handleSubmit(e, { [name]: item.value, [`${name}Code`]: item.code})} 
+                                        onChange={(e) => handleSubmit(e, { [name]: item.value, [`${name}Code`]: item.code})} 
                                         
                                         />
                                     <label htmlFor={item.code}>{item.value}</label>
@@ -261,9 +300,14 @@ const Modal = ({
                 {(name === "price" || name === "area") && 
                     <button
                         type='button'
-                        className='w-full bg-[#FFA500] py-2 font-medium rounded-bl-md rounded-br-md'
-                        onClick={handleSubmit}
-                    >
+                        className='w-full bg-[#FFA500] py-2 font-medium rounded-bl-md rounded-br-md absolute bottom-0'
+                        // onClick={(e) => handleSubmit(e, { start: convert100toTarget(persent1), end : convert100toTarget(persent2)})}
+                        // onClick={(e) => handleSubmit(e, {
+                        //     [`${name}Code`]: [ convert100toTarget(persent1),convert100toTarget(persent2)],
+                        //     [name]: `Từ ${convert100toTarget(persent1)} - ${convert100toTarget(persent2)} ${name === "price" ? "Triệu" : "m2"}`
+                        // })}
+                        onClick={handleBeforeSubmit}
+                        >
                         ÁP DỤNG
                     </button>
                 }
@@ -273,4 +317,4 @@ const Modal = ({
     )
 }
 
-export default Modal
+export default memo(Modal);
