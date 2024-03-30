@@ -1,10 +1,13 @@
-import React, { useCallback, useState }  from 'react'
+import React, { useCallback, useEffect, useState }  from 'react'
 import { SearchItem, Modal } from '../../components'
 import icons from "../../utils/icons";
 import { useSelector, useDispatch } from "react-redux";
 // import { getCodePrice, getCodeArea } from '../../utils/Common/getCode';
 // import { getCodes, getCodesArea } from '../../utils/Common/getCode';
-import * as actions from "../../store/actions";
+// import * as actions from "../../store/actions";
+import { useNavigate, createSearchParams, useLocation } from "react-router-dom";
+import { path } from '../../utils/constant';
+import { TbTable } from 'react-icons/tb';
 
 const {
     GrNext, 
@@ -17,7 +20,10 @@ const {
 
 const Search = ({ }) => {
 
-    const dispatch = useDispatch();
+    // const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const location = useLocation()
+
 
     const { provinces, areas, prices, categories } = useSelector(state =>  state.app);
     const [ isShowModal, setIsShowModal ] = useState(false);
@@ -25,6 +31,8 @@ const Search = ({ }) => {
     const [ content, setContent ] = useState([]);
     const [ queries, setQueries ] = useState({});
     const [ arrMinMax, setArrMinMax ] = useState({});
+    const [ defaultText, setDefaultText ] = useState('')
+
 
     // console.log(getCodesArea([10, 40], areas));
 
@@ -37,10 +45,18 @@ const Search = ({ }) => {
     // console.log(getCodePrice(prices));
     // console.log(getCodeArea(areas));
 
+    useEffect(() => {
+        if (!location?.pathname.includes(path.SEARCH)) {
+            setArrMinMax({})
+            setQueries({})
+        }
+    }, [location]);
+
 
     const handleShowModal = ( content, name, defaultText ) => {
         setContent(content);
         setName(name);
+        setDefaultText(defaultText);
         setIsShowModal(true);
         // console.log(name);
     };
@@ -58,18 +74,56 @@ const Search = ({ }) => {
     // console.log(queries);
 
     const handleSearch = () => {
-        const queryCodes = Object.entries(queries).filter(item => item[0].includes("Code"));
-        let queryCodesObj = {};
-        queryCodes.forEach(item => { queryCodesObj[item[0]] = item[1]});
+        // const queryCodes = Object.entries(queries).filter(item => item[0].includes("Code")).filter(item => item[1] );
+        // let queryCodesObj = {};
+        // queryCodes.forEach(item => { queryCodesObj[item[0]] = item[1]});
         
-        // console.log(queryCodesObj);
-        dispatch(actions.getPostsLimit(queryCodesObj));
+        // // console.log(queryCodesObj);
+        // const queryText = Object.entries(queries).filter(item => !item[0].includes('Code') || !item[0].includes('Number'))
+        // let queryTextObj = {};
+        // queryText.forEach(item => { queryCodesObj[item[0]] = item[1]});
+        // console.log(queryTextObj);
+        
+        // let titleSearch = `${queryTextObj.category
+        //     ? queryTextObj.category
+        //     : 'Cho thuê tất cả'} ${queryTextObj.province
+        //         ? `tỉnh ${queryTextObj.province}`
+        //         : ''} ${queryTextObj.price
+        //             ? `giá ${queryTextObj.price}`
+        //             : ''} ${queryTextObj.area
+        //                 ? `diện tích ${queryTextObj.area}` : ''} `
+        
+        // console.log(titleSearch);
+
+        // navigate({
+        //     pathname: path.SEARCH,
+        //     search: createSearchParams(queryCodesObj).toString(),
+        // }, { state: { titleSearch } })
+
+        const queryCodes = Object.entries(queries).filter(item => item[0].includes('Number') || item[0].includes('Code')).filter(item => item[1])
+        let queryCodesObj = {}
+        queryCodes.forEach(item => { queryCodesObj[item[0]] = item[1] })
+        const queryText = Object.entries(queries).filter(item => !item[0].includes('Code') || !item[0].includes('Number'))
+        let queryTextObj = {}
+        queryText.forEach(item => { queryTextObj[item[0]] = item[1] })
+        let titleSearch = `${queryTextObj.category
+            ? queryTextObj.category
+            : 'Cho thuê tất cả'} ${queryTextObj.province
+                ? `tỉnh ${queryTextObj.province}`
+                : ''} ${queryTextObj.price
+                    ? `giá ${queryTextObj.price}`
+                    : ''} ${queryTextObj.area
+                        ? `diện tích ${queryTextObj.area}` : ''} `
+        navigate({
+            pathname: path.SEARCH,
+            search: createSearchParams(queryCodesObj).toString(),
+        }, { state: { titleSearch } })
     }
 
     return (
         <>
             <div className='p-[10px] w-3/5 my-3 bg-[#febb02] rounded-lg flex-col lg:flex-row flex items-center justify-around gap-2'>
-                <span onClick={() => handleShowModal(categories,"category" ,"Phòng trọ, nhà trọ")} className='cursor-pointer flex-1'>
+                <span onClick={() => handleShowModal(categories,"category" ,"Tìm tất cả")} className='cursor-pointer flex-1'>
                     <SearchItem 
                         text={queries.category}
                         defaultText={'Tìm tất cả'}
@@ -124,6 +178,7 @@ const Search = ({ }) => {
                         name={name}
                         setIsShowModal={setIsShowModal}
                         queries={queries}
+                        defaultText={defaultText}
                         />}
         </>
     )

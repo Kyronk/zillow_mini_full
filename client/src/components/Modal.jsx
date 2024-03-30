@@ -13,7 +13,7 @@ const Modal = ({
     handleSubmit,
     queries,
     arrMinMax,
-
+    defaultText,
 }) => {
 
     // console.log(arrMinMax)
@@ -178,6 +178,18 @@ const Modal = ({
 
                 {(name === "category" || name === "province") && 
                     <div className='p-4 flex flex-col'>
+                        <span className='py-2 flex gap-2 items-center border-b border-gray-200'>
+                            <input
+                                type="radio"
+                                name={name}
+                                value={defaultText || ''}
+                                id='default'
+                                checked={!queries[`${name}Code`] ? true : false}
+                                onChange={(e) => handleSubmit(e, { [name]: defaultText, [`${name}Code`]: null })} // chỗ null nếu đẻ v thì nó k hiện trên queries còn để "" thì nó vẫn gọi api
+                                
+                            />
+                            <label htmlFor='default'>{defaultText}</label>
+                        </span>
                         {content?.map(item => {
                             return (
                                 <span key={item.code} className="py-2 flex gap-2 items-center border-b border-gray-200">

@@ -9,20 +9,12 @@ const active = "w-[48px] h-[48px] flex justify-center items-center bg-[#E13427] 
 const PageNumber = ({ text, currentPage, icon, setCurrentPage, type }) => {
 
     const navigate = useNavigate();
+    const location = useLocation();
     // console.log(currentPage)
     const [ paramsSearch ] = useSearchParams();
     let entries = paramsSearch.entries();
 
     const append = (entries) => {
-        // let params = [];
-        // paramsSearch.append("page", +text);
-        // for (let entry of entries) {
-        //     params.push(entry)
-        // }
-        // let searchParamsObject = {}
-        // params?.map(i => {
-        //     searchParamsObject = { ...searchParamsObject, [i[0]]: i[1] }
-        // });
         let params = []
         paramsSearch.append('page', +text)
         for (let entry of entries) {
@@ -36,6 +28,7 @@ const PageNumber = ({ text, currentPage, icon, setCurrentPage, type }) => {
                 searchParamsObject = { ...searchParamsObject, [i[0]]: [i[1]] }
             }
         })
+    
         return searchParamsObject
 
         // return searchParamsObject;
@@ -43,7 +36,7 @@ const PageNumber = ({ text, currentPage, icon, setCurrentPage, type }) => {
     // append(entries)
 
     const handleChangePage = () => {
-        if (! (text === "...")) {
+        if (!(text === "...")) {
             setCurrentPage(+text);
             // console.log(append(entries))
             navigate({
