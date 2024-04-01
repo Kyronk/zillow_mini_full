@@ -91,10 +91,28 @@ const Search = ({ }) => {
         //         : ''} ${queryTextObj.price
         //             ? `giá ${queryTextObj.price}`
         //             : ''} ${queryTextObj.area
-        //                 ? `diện tích ${queryTextObj.area}` : ''} `
-        
+        //                 ? `diện tích ${queryTextObj.area}` : ''}`
         // console.log(titleSearch);
+        // navigate({
+        //     pathname: path.SEARCH,
+        //     search: createSearchParams(queryCodesObj).toString(),
+        // }, { state: { titleSearch } })
 
+        // const queryCodes = Object.entries(queries).filter(item => item[0].includes('Number') || item[0].includes('Code')).filter(item => item[1])
+        // let queryCodesObj = {};
+        // queryCodes.forEach(item => { queryCodesObj[item[0]] = item[1] })
+        // const queryText = Object.entries(queries).filter(item => !item[0].includes('Code') || !item[0].includes('Number'))
+        // let queryTextObj = {};
+        // console.log(queryCodes);
+        // queryText.forEach(item => { queryTextObj[item[0]] = item[1] })
+        // let titleSearch = `${queryTextObj.category
+        //     ? queryTextObj.category
+        //     : 'Cho thuê tất cả'} ${queryTextObj.province
+        //         ? `tỉnh ${queryTextObj.province}`
+        //         : ''} ${queryTextObj.price
+        //             ? `giá ${queryTextObj.price}`
+        //             : ''} ${queryTextObj.area
+        //                 ? `diện tích ${queryTextObj.area}` : ''} `
         // navigate({
         //     pathname: path.SEARCH,
         //     search: createSearchParams(queryCodesObj).toString(),
@@ -118,7 +136,7 @@ const Search = ({ }) => {
             pathname: path.SEARCH,
             search: createSearchParams(queryCodesObj).toString(),
         }, { state: { titleSearch } })
-    }
+    };
 
     return (
         <>

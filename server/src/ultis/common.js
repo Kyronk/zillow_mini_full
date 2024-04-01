@@ -8,7 +8,9 @@ export const getNumberFromString = (string) => {
         number = +string.match(/\d+/)[0]
     }
     return number
-}
+};
+
+
 export const getNumberFromStringV2 = (string) => {
     let number = 0
     if (string.search('đồng/tháng') !== -1) {
@@ -19,4 +21,4 @@ export const getNumberFromStringV2 = (string) => {
         number = +string.match(/\d+/)[0]
     }
     return +number
-}
+};

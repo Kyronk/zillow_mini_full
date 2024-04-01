@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 import { v4 } from "uuid";
 
 import { dataPrice, dataArea } from "../ultis/data";
-import { getNumberFromString } from "../ultis/common";
+import { getNumberFromString, getNumberFromStringV2 } from "../ultis/common";
 
 import generateCode from "../ultis/generateCode";
 import chothuephongtro from "../../data/chothuephongtro.json";
@@ -80,8 +80,8 @@ export const insertService = () => new Promise (async (resolve, reject) => {
                     areaCode: dataArea.find(area => area.max > currentArea && area.min <= currentArea)?.code,
                     priceCode: dataPrice.find(area => area.max > currentPrice && area.min <= currentPrice)?.code,
                     provinceCode,
-                    // priceNumber: getNumberFromStringV2(item?.header?.attributes?.price),
-                    // areaNumber: getNumberFromStringV2(item?.header?.attributes?.acreage)
+                    priceNumber: getNumberFromStringV2(item?.header?.attributes?.price),
+                    areaNumber: getNumberFromStringV2(item?.header?.attributes?.acreage)
                 })
                 await db.Attribute.create({
                     id: attributesId,

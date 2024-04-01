@@ -1,5 +1,6 @@
 import db from "../models";
-
+// import { Op } from "sequelize";
+const { Op } = require("sequelize");
 
 // get all Post
 export const getPostService = () => new Promise( async (resolve, reject) => {
@@ -32,11 +33,15 @@ export const getPostService = () => new Promise( async (resolve, reject) => {
 
 
 // get Post limit
-export const getPostLimitService = (page, query) => new Promise( async (resolve, reject) => {
+export const getPostLimitService = (page, query, { priceNumber, areaNumber }) => new Promise( async (resolve, reject) => {
+    // console.log({ priceNumber, areaNumber });
     try {
-        let offset = ( !page || +page <= 1 ) ? 0 : (+page + 1) ;  
+        let offset = ( !page || +page <= 1 ) ? 0 : (+page + 1);
+        const queries = { ...query};
+        if ( priceNumber ) queries.priceNumber = { [Op.between]: priceNumber}
+        if ( areaNumber ) queries.areaNumber = { [Op.between]: areaNumber}
         const response = await db.Post.findAndCountAll({
-            where: query,
+            where: queries,
             raw: true,
             nest: true,
             // offset: page * (+process.env.LIMIT) || 0,

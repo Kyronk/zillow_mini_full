@@ -34,27 +34,44 @@ const List = ({categoryCode}) => {
     //     dispatch(getPostsLimit(searchParamsObject))
     // }, [searchParams, categoryCode])
 
+    // useEffect(() => {
+    //     let params = [];
+    //     for (let entry of searchParams.entries()) {
+    //         params.push(entry);
+    //     }
+    //     let searchParamsObject = {};
+    //     // params?.map(i => { searchParamsObject = { ...searchParamsObject, [i[0]]: i[1]}});
+    //     params?.forEach(i => { 
+    //         if (Object.keys(searchParamsObject)?.some(item => item  === i[0])) {
+    //             searchParamsObject[i[0]] = [ ...searchParamsObject[i[0]], i[1]]
+    //         }else {
+    //             searchParamsObject = { ...searchParamsObject, [i[0]]: i[1]};
+    //         }
+
+    //     });
+    //     if(categoryCode) searchParamsObject.categoryCode = categoryCode;
+    //     // console.log(searchParamsObject);
+    //     dispatch(getPostsLimit(searchParamsObject));
+    // }, [searchParams, categoryCode])
+
+    // console.log(categoryCode)
+
     useEffect(() => {
-        let params = [];
+        let params = []
         for (let entry of searchParams.entries()) {
             params.push(entry);
         }
-        let searchParamsObject = {};
-        // params?.map(i => { searchParamsObject = { ...searchParamsObject, [i[0]]: i[1]}});
-        params?.forEach(i => { 
-            if (Object.keys(searchParamsObject)?.some(item => item  === i[0])) {
-                searchParamsObject[i[0]] = [ ...searchParamsObject[i[0]], i[1]]
-            }else {
-                searchParamsObject = { ...searchParamsObject, [i[0]]: i[1]};
+        let searchParamsObject = {}
+        params?.forEach(i => {
+            if (Object.keys(searchParamsObject)?.some(item => item === i[0])) {
+                searchParamsObject[i[0]] = [...searchParamsObject[i[0]], i[1]]
+            } else {
+                searchParamsObject = { ...searchParamsObject, [i[0]]: [i[1]] }
             }
-
-        });
-        if(categoryCode) searchParamsObject.categoryCode = categoryCode;
-        // console.log(searchParamsObject);
-        dispatch(getPostsLimit(searchParamsObject));
+        })
+        if (categoryCode) searchParamsObject.categoryCode = categoryCode
+        dispatch(getPostsLimit(searchParamsObject))
     }, [searchParams, categoryCode])
-    // console.log(categoryCode)
-
 
 
     return (

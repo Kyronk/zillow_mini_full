@@ -29,7 +29,7 @@ const Item = ({
 }) => {
     
     const [ isHoverHeart, setIsHoverHeart ] = useState(false);
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
     // console.log(isHoverHeart);
     // console.log(images);
 
@@ -54,7 +54,7 @@ const Item = ({
                     <img src={images[3]} alt="preview" className='w-[140px] h-[120px] object-cover' /> */}
                     {images?.length > 0 && images.filter((i, index) => indexs.some(i=> i === index))?.map((i, index) => {
                         return (
-                            <img key={index} src={i} alt="preview" className='w-[140px] h-[120px] object-cover' />
+                            <img key={index} src={i} alt="preview" className='w-[47%] h-[120px] object-cover' />
                         )
                     })}
 

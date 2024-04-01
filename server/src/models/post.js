@@ -31,8 +31,8 @@ module.exports = (sequelize, DataTypes) => {
         userId: DataTypes.STRING,
         overviewId: DataTypes.STRING,
         imagesId: DataTypes.STRING,
-        // priceNumber: DataTypes.FLOAT,
-        // areaNumber: DataTypes.FLOAT,
+        priceNumber: DataTypes.FLOAT,
+        areaNumber: DataTypes.FLOAT,
     }, {
         sequelize,
         modelName: 'Post',

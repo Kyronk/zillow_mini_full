@@ -18,7 +18,7 @@ const SearchDetail = () => {
 
     const { prices, areas, categories } = useSelector(state => state.app);
     const location = useLocation();
-    console.log(location)
+    // console.log(location)
     // const [ categoryCurrent, setCategoryCurrent] = useState({});
     // const dispatch = useDispatch();
     

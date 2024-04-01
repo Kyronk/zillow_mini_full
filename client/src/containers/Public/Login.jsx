@@ -147,7 +147,8 @@ const Login = () => {
 
 
     return (
-        <div className='bg-white w-[600px] p-[30px] pb-[100px] rounded-md shadow-sm'>
+        <div className='w-full flex justify-center items-center'>
+            <div className='bg-white w-[600px] p-[30px] pb-[100px] rounded-md shadow-sm'>
             <h3 className='font-semibold text-2xl'>{isRegister ? "Đăng ký tài khoản" : "Đăng nhập"}</h3>
             <div className='w-full flex flex-col gap-5'>
                 { isRegister && <InputForm 
@@ -228,6 +229,7 @@ const Login = () => {
                 }
 
             </div>
+        </div>
         </div>
     )
 }
