@@ -5,11 +5,18 @@ import { TbReportMoney } from "react-icons/tb";
 import { RiCrop2Line } from "react-icons/ri";
 import { FaBuilding } from "react-icons/fa6";
 import { IoIosSearch } from "react-icons/io";
-import { FaStar } from "react-icons/fa";
-import { FaHeart } from "react-icons/fa";
-import { FaRegHeart } from "react-icons/fa";
+import { FaStar, FaHeart, FaRegHeart  } from "react-icons/fa";
+// import { } from "react-icons/fa";
+// import {  } from "react-icons/fa";
 import { BsBookmarkStarFill } from "react-icons/bs";
 import { GrLinkPrevious } from "react-icons/gr";
+
+import { AiOutlinePlusCircle, AiOutlineLogout } from 'react-icons/ai'
+// import { ImPencil2, ImBin } from 'react-icons/im'
+import { MdOutlineHouseSiding, MdOutlineLibraryBooks } from 'react-icons/md'
+import { BiUserPin } from 'react-icons/bi'
+import { ImPencil2 } from "react-icons/im";
+
 
 const icons = {
     CiCirclePlus,
@@ -24,6 +31,12 @@ const icons = {
     FaRegHeart,
     BsBookmarkStarFill,
     GrLinkPrevious,
-}
+    
+    ImPencil2,
 
-export default icons
+    MdOutlineLibraryBooks,
+    BiUserPin,
+    AiOutlineLogout,
+};
+
+export default icons;

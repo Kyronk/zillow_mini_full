@@ -20,6 +20,10 @@ export default {
                 '600': "600px",
                 '1100': "1100px"
             },
+            minWidth: {
+                '300': "300px",
+                '200': "200px"
+            },
             cursor: {
                 pointer: "pointer"
             },

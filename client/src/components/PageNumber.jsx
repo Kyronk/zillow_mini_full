@@ -40,7 +40,7 @@ const PageNumber = ({ text, currentPage, icon, setCurrentPage, type }) => {
             setCurrentPage(+text);
             // console.log(append(entries))
             navigate({
-                pathname: location.pathname,
+                pathname: location?.pathname,
                 search: createSearchParams(
                     append(entries)
                 ).toString()

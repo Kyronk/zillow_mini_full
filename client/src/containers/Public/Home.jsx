@@ -10,12 +10,21 @@ import * as actions from "../../store/actions";
 const Home = () => {
     const dispatch = useDispatch();
     const { isLoggedIn } = useSelector(state => state.auth);
-
+    const { currentData } = useSelector(state => state.user);
+    
     useEffect(() => {
         dispatch(actions.getPrice());
         dispatch(actions.getArea());
         dispatch(actions.getProvince());
+        // dispatch(actions.getCurrent();
     }, []);
+    
+    useEffect(() => {
+        setTimeout(() => {
+            isLoggedIn &&  dispatch(actions.getCurrent());
+        }, 1000);
+    }, [ isLoggedIn]);
+    // console.log(currentData);
 
     return (
         <div className='w-full flex gap-6 flex-col items-center h-full'>

@@ -2,6 +2,7 @@ import authReducer from "./authReducer";
 import userReducer from "./userReduces";
 import postReducer from "./postReducer";
 import appReducer from "./appReducer";
+// import userReducer from "./userReduces";
 
 import { combineReducers } from "redux";
 import storage from "redux-persist/lib/storage";
@@ -26,6 +27,7 @@ const rootReducer = combineReducers({
     user: userReducer,
     post: postReducer,
     app: appReducer,
+    user: userReducer,
 });
 
 export default rootReducer;

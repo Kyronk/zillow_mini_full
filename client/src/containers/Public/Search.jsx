@@ -46,7 +46,7 @@ const Search = ({ }) => {
     // console.log(getCodeArea(areas));
 
     useEffect(() => {
-        if (!location?.pathname.includes(path.SEARCH)) {
+        if (!location?.pathname?.includes(path.SEARCH)) {
             setArrMinMax({})
             setQueries({})
         }
