@@ -17,6 +17,8 @@ import { MdOutlineHouseSiding, MdOutlineLibraryBooks } from 'react-icons/md'
 import { BiUserPin } from 'react-icons/bi'
 import { ImPencil2 } from "react-icons/im";
 
+// import { IoIosLogOut } from "react-icons/io";
+import { FaChevronDown } from "react-icons/fa";
 
 const icons = {
     CiCirclePlus,
@@ -37,6 +39,8 @@ const icons = {
     MdOutlineLibraryBooks,
     BiUserPin,
     AiOutlineLogout,
+
+    FaChevronDown,
 };
 
 export default icons;

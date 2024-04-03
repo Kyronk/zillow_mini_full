@@ -1,16 +1,28 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Routes, Route } from "react-router-dom";
 
 import { DetailPost, Header, Home, HomePage, Login, Rental, SearchDetail } from './containers/Public';
 import { path } from "./utils/constant";
 
-
+import { System, CreatePost } from './containers/System';
+import * as actions from "./store/actions";
+import { useDispatch, useSelector } from "react-redux";
 
 function App() {
+
+    const dispatch = useDispatch();
+    const { isLoggedIn } =  useSelector(state => state.auth);
+    
+    useEffect(() => {
+        setTimeout(() => {
+            isLoggedIn &&  dispatch(actions.getCurrent());
+        }, 1000);
+    }, [ isLoggedIn]);
 
     return (
         <div className=' bg-primary'>
             <Routes>
+                {/*  mother routes  */}
                 <Route path={path.HOME} element={<Home /> }>
                     <Route path="*" element={<HomePage />} />
                     <Route path={path.HOME__PAGE} element={<HomePage />} />
@@ -26,9 +38,14 @@ function App() {
 
                 
                 </Route>
-
+            
+                {/*  mother routes  */}
+                <Route path={path.SYSTEM} element={<System />}>
+                    <Route  path={path.CREATE_POST}  element={<CreatePost />}/>
+                </Route>
 
             </Routes>
+
         </div>
     )
 }

@@ -1,5 +1,5 @@
 import axios from  "../axiosConfig";
-
+import axiosDefault from "axios";
 
 export const apiGetPrices = () => new Promise (async (resolve, reject) => {
     try {

@@ -9,7 +9,7 @@ const InputForm = ({
     invalidFields,
     setInvalidFields,
 }) => {
-    console.log( invalidFields?.length )
+    // console.log( invalidFields?.length )
     return (
         <div>
             <label htmlFor="phone" className='text-xs'>{label}</label>

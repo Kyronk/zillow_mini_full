@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import logo from "../../assets/logowithoutbg.png";
-import { Button } from '../../components';
+import { Button, User } from '../../components';
 import icons from '../../utils/icons';
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { path } from "../../utils/constant";
@@ -11,8 +11,10 @@ import menuManage from '../../utils/menuManage';
 import { ImPencil2 } from "react-icons/im";
 import { MdOutlineHouseSiding, MdOutlineLibraryBooks } from 'react-icons/md'
 import { BiUserPin } from 'react-icons/bi'
+import { AiOutlinePlusCircle, AiOutlineLogout } from 'react-icons/ai'
 
-const { CiCirclePlus } = icons;
+
+const { CiCirclePlus, FaChevronDown } = icons;
 
 // fix tạm chỗ này mai mốt xem lại
 const menuManage1 = [
@@ -44,9 +46,7 @@ const menuManage1 = [
 ]
 
 const Header = () => {
-    console.log(menuManage);
-
-
+    // console.log(menuManage);
     const { currentData } = useSelector(state => state.user);
 
     const [ searchParams] = useSearchParams();
@@ -95,14 +95,17 @@ const Header = () => {
                                 />
                         </div>}
                     
-                        {isLoggedIn && <div className='flex items-center gap-1 relative'>
-                        <span>{currentData.name}</span>
+                        {isLoggedIn && <div className='flex items-center gap-3 relative'>
+                        {/* <span>{currentData.name}</span> */}
+                            <User />
                             <Button 
                                 text={"Quảng lý tài khoản"} 
                                 textColor="text-white" 
                                 bgColor="bg-blue-600" 
                                 px="px-4"
-                                // onClick={() => dispatch(actions.logout())}
+                                // IcAfter={<FaChevronDown />}
+                                IcAfter={FaChevronDown}
+
                                 onClick={() => setIsShowMenu(prev => !prev)}
                                 />
 
@@ -112,7 +115,7 @@ const Header = () => {
                                     return (
                                         
                                         <Link
-                                            className='hover:text-orange-500 text-blue-600 border-b border-gray-200 py-2' 
+                                            className='hover:text-orange-500 flex items-center gap-1 text-blue-600 border-b border-gray-200 py-2' 
                                             key={item.id} 
                                             to={item?.path} >
                                             {/*  */}
@@ -127,9 +130,14 @@ const Header = () => {
                                 
                                 }
                                 <span
-                                        className='cursor-pointer hover:text-orange-500 text-blue-500 py-2'
-                                        onClick={() => dispatch(actions.logout())}
-                                    >Đăng xuất</span>
+                                        className='cursor-pointer flex items-center gap-2 hover:text-orange-500 text-blue-500 py-2'
+                                        onClick={() => {
+                                            setIsShowMenu(false)
+                                            dispatch(actions.logout()) 
+                                        }}
+                                    >
+                                        <AiOutlineLogout />
+                                        Đăng xuất</span>
                             </div>}
                         </div>
                             }
