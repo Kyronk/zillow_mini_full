@@ -5,25 +5,25 @@ import { Outlet } from "react-router-dom";
 import { Navigation, Search} from "./index";
 import { Intro, Contact } from '../../components';
 import { useSelector, useDispatch } from "react-redux";
-import * as actions from "../../store/actions";
+// import * as actions from "../../store/actions";
 
 const Home = () => {
-    const dispatch = useDispatch();
+    // const dispatch = useDispatch();
     const { isLoggedIn } = useSelector(state => state.auth);
     const { currentData } = useSelector(state => state.user);
     
-    useEffect(() => {
-        dispatch(actions.getPrice());
-        dispatch(actions.getArea());
-        dispatch(actions.getProvince());
-        // dispatch(actions.getCurrent();
-    }, []);
+    // useEffect(() => {
+    //     dispatch(actions.getPrice());
+    //     dispatch(actions.getArea());
+    //     dispatch(actions.getProvince());
+    //     // dispatch(actions.getCurrent();
+    // }, []);
     
-    useEffect(() => {
-        setTimeout(() => {
-            isLoggedIn &&  dispatch(actions.getCurrent());
-        }, 1000);
-    }, [ isLoggedIn]);
+    // useEffect(() => {
+    //     setTimeout(() => {
+    //         isLoggedIn &&  dispatch(actions.getCurrent());
+    //     }, 1000);
+    // }, [ isLoggedIn]);
     // console.log(currentData);
 
     return (

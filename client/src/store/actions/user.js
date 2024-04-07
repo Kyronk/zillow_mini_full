@@ -16,7 +16,10 @@ export const getCurrent = () => async (dispatch) => {
                 type: actionTypes.GET_CURRENT,
                 msg: response.data.msg,
                 currentData: null
-            })
+            });
+
+            // error : not run
+            dispatch({ type: actionTypes.LOGOUT});
         }
 
     } catch (error) {
@@ -24,6 +27,8 @@ export const getCurrent = () => async (dispatch) => {
             type: actionTypes.GET_CURRENT,
             currentData: null,
             msg: response.data.msg
-        })
+        });
+            // error : not run
+        dispatch({ type: actionTypes.LOGOUT});
     }
 }

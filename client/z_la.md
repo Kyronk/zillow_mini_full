@@ -8,6 +8,8 @@
 
 # luu ý tailwind khi dùng với vite và npm app nó khác nhau
 
+# tool html class to css in file style css
+
 
 # lưu ý về các thuộc tính css
 

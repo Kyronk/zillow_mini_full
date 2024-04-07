@@ -19,6 +19,13 @@ function App() {
         }, 1000);
     }, [ isLoggedIn]);
 
+    useEffect(() => {
+        dispatch(actions.getPrice());
+        dispatch(actions.getArea());
+        dispatch(actions.getProvince());
+        // dispatch(actions.getCurrent();
+    }, []);
+
     return (
         <div className=' bg-primary'>
             <Routes>
