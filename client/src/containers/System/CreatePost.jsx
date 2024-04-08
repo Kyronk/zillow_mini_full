@@ -3,12 +3,16 @@ import { Overview, Address, Loading, Button } from '../../components'
 import { apiUploadImage } from '../../services';
 import { useSelector } from 'react-redux'
 import { getCodes, getCodesArea} from "../../utils/Common/getCode";
+import { apiCreatePost } from '../../services';
+
 
 import { BsCameraFill, BsCloudFogFill } from "react-icons/bs";
 import { TiDeleteOutline } from "react-icons/ti";
 
 
 const CreatePost = () => {
+    const { prices, areas, categories, provinces } = useSelector(state => state.app);
+    const { currentData } = useSelector(state => state.user);
 
     const [payload, setPayload] = useState({
         categoryCode: '',
@@ -21,15 +25,15 @@ const CreatePost = () => {
         areaCode: '',
         description: '',
         target: '',
-        province: ''
+        province: '',
+        
     });
 
     const [ imagesPreview, setImagesPreview ] = useState([]);
     // const [ imagesPreview, setImagesPreview ] = useState(['https://res.cloudinary.com/dwjsk2qlw/image/upload/v1712377576/zillow_mini/epo702jkfpszgum8qusn.jpg', 'https://res.cloudinary.com/dwjsk2qlw/image/upload/v1712379590/zillow_mini/kzcqzfcrif42d9trnmtc.jpg']);
 
     const [ isLoading, setIsLoading ] = useState(false);
-    const { prices, areas } = useSelector(state => state.app);
-    console.log(areas)
+    // console.log(areas)
     // console.log({prices, areas});
 
     // console.log(payload);
@@ -65,8 +69,8 @@ const CreatePost = () => {
         }))
     };
 
-    const handleSubmit = () => {
-        let priceCodeArr = getCodes( +payload.priceNumber, prices, 1, 15);
+    const handleSubmit = async () => {
+        let priceCodeArr = getCodes( +payload.priceNumber / Math.pow(10,6), prices, 1, 15);
         let priceCode = priceCodeArr[0]?.code;
         let areaCodeArr = getCodesArea(+payload.areaNumber, areas, 0, 90);
         // khuc này có vấn đề là phải nhập vào con số cao từ 10 20m2 trở lên 
@@ -77,8 +81,16 @@ const CreatePost = () => {
             ...payload,
             priceCode,
             areaCode,
+            userId: currentData?.id,
+            priceNumber: +payload.priceNumber / Math.pow(10,6),
+            // areaNumber: +payload.areaNumber /
+            target: payload.target || "Tất cả",
+            label: `${categories?.find(item => item.code === payload?.categoryCode)?.value} ${payload?.address?.split(",")[0]}`,
+            
         };
-        console.log(finalPayload);
+        // console.log(finalPayload);
+        const response = await apiCreatePost(finalPayload);
+        console.log(response);
 
     }
 
