@@ -50,6 +50,7 @@ export const getPostLimitService = (page, query, { priceNumber, areaNumber }) =>
             // offset: page * (+process.env.LIMIT) || 0,
             offset: offset * +process.env.LIMIT,
             limit: +process.env.LIMIT,
+            order: [["createdAt", "DESC"]],
             include: [
                 { model: db.Image, as: "images", attributes: ["image"]},
                 { model: db.Attribute, as: "attributes", attributes: ["price", "acreage", "published", "hashtag"]},
@@ -185,7 +186,7 @@ export const createNewPostService = (body, userId) => new Promise( async (resolv
             },
             defaults: {
                 code: body.province.includes("Thành phố") ? 
-                    generateCode(body?.province?.replace("Thành phố ", "")) : 
+                    generateCode(body?.province?.replace("Thành phố ", "")): 
                     generateCode(body?.province?.replace("Tỉnh ", "")),
                 
                     value: body.province.includes("Thành phố") ? 

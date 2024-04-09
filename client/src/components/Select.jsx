@@ -8,10 +8,22 @@ const Select = ({
     type,
     reset,
     name,
+    invalidFields,
+    setInvalidFields,
+
 
 }) => {
     // console.log(options);
 
+    const handleErrorText = () => {
+        // let textError = "";
+        let nameInvalid = invalidFields?.find(item => item.name === name);
+        let addressInvalid = invalidFields?.find(item  => item.name ===  "address");
+
+
+        return `${nameInvalid ? nameInvalid.message : ""}` || `${addressInvalid ? addressInvalid.message : ""}`
+        // return textError;
+    };
 
     return (
         <div className='flex flex-col gap-2 flex-1'>
@@ -20,6 +32,7 @@ const Select = ({
                 value={reset ? "" : value} 
                 // onChange={(e) => setValue(e.target.value)} 
                 onChange={(e) => !name ? setValue(e.target.value) : setValue(prev => ({ ...prev, [name]: e.target.value}))} 
+                onFocus={() => setInvalidFields([])}
                 id="select-address" 
                 className='outline-none border border-gray-300 p-2 rounded-md w-full'  
                 
@@ -50,6 +63,11 @@ const Select = ({
                     )
                 })}
             </select>
+            <small className='text-red-500' >
+                {/* Có lỗi */}
+                {/* {invalidFields?.some(item => item.name === name) || invalidFields?.some(item => item.name === "address") && invalidFields?.find(item => item.name === name)?.message} */}
+                {handleErrorText()}
+            </small>
         </div>
     )
 }

@@ -4,7 +4,8 @@ import { apiUploadImage } from '../../services';
 import { useSelector } from 'react-redux'
 import { getCodes, getCodesArea} from "../../utils/Common/getCode";
 import { apiCreatePost } from '../../services';
-
+import Swal  from "sweetalert2";
+import validate from '../../utils/Common/validateFields';
 
 import { BsCameraFill, BsCloudFogFill } from "react-icons/bs";
 import { TiDeleteOutline } from "react-icons/ti";
@@ -26,13 +27,14 @@ const CreatePost = () => {
         description: '',
         target: '',
         province: '',
-        
+
     });
 
     const [ imagesPreview, setImagesPreview ] = useState([]);
     // const [ imagesPreview, setImagesPreview ] = useState(['https://res.cloudinary.com/dwjsk2qlw/image/upload/v1712377576/zillow_mini/epo702jkfpszgum8qusn.jpg', 'https://res.cloudinary.com/dwjsk2qlw/image/upload/v1712379590/zillow_mini/kzcqzfcrif42d9trnmtc.jpg']);
 
     const [ isLoading, setIsLoading ] = useState(false);
+    const [ invalidFields, setInvalidFields] = useState([]);
     // console.log(areas)
     // console.log({prices, areas});
 
@@ -88,9 +90,35 @@ const CreatePost = () => {
             label: `${categories?.find(item => item.code === payload?.categoryCode)?.value} ${payload?.address?.split(",")[0]}`,
             
         };
-        // console.log(finalPayload);
-        const response = await apiCreatePost(finalPayload);
-        console.log(response);
+        const result = validate(finalPayload, setInvalidFields);
+        // console.log(payload);
+        // console.log(result);
+        // console.log(invalidFields);
+        if ( result === 0) {
+            // console.log(finalPayload);
+            const response = await apiCreatePost(finalPayload);
+            if (response?.data?.err === 0) {
+                Swal.fire("Thành công", "Đã thêm bài đăng mới", "Success").then(() => {
+                    setPayload({
+                        categoryCode: '',
+                        title: '',
+                        priceNumber: 0,
+                        areaNumber: 0,
+                        images: '',
+                        address: '',
+                        priceCode: '',
+                        areaCode: '',
+                        description: '',
+                        target: '',
+                        province: '',
+                
+                    })
+                });
+            } else {
+                Swal.fire("Oop!", "Có lỗi gì đó", "Error")
+            }
+        }
+
 
     }
 
@@ -99,8 +127,8 @@ const CreatePost = () => {
             <h1 className='text-3xl font-medium py-4 border-b border-gray-200'>Đăng tin mới</h1>
             <div className='flex gap-4'>
                 <div className="py-4 flex flex-col gap-8 flex-auto">
-                    <Address payload={payload} setPayload={setPayload} />
-                    <Overview payload={payload} setPayload={setPayload} />
+                    <Address invalidFields={invalidFields} setInvalidFields={setInvalidFields} payload={payload} setPayload={setPayload} />
+                    <Overview invalidFields={invalidFields} setInvalidFields={setInvalidFields} payload={payload} setPayload={setPayload} />
                     <div className='w-full'>
                         <h2 className='font-semibold text-xl py-4'>Hình ảnh</h2>
                         <small>Cập nhập hình ảnh rõ ràng sẽ cho thuê nhanh hơn</small>
@@ -116,6 +144,9 @@ const CreatePost = () => {
 
                             </label>
                             <input onChange={handleFiles} hidden type="file" id="file" multiple />
+                            <small className='text-red-500 block'>
+                                {invalidFields?.some(item => item.name === "images") && invalidFields?.find(item => item.name === "images")?.message}
+                            </small>
                             
                             <div>
                                 <h3 className='font-medium'>Preview</h3>

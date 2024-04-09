@@ -2,7 +2,7 @@ import React, { memo, useEffect, useState } from 'react'
 import { Select, InputReadOnly } from "../components/";
 import { apiGetPublicDistrict, apiGetPublicProvince, apiGetPublicWard } from '../services';
 
-const Address = ({ payload, setPayload }) => {
+const Address = ({ payload, setPayload, invalidFields, setInvalidFields }) => {
 
     const [provinces, setProvinces] = useState([]);
     const [districts, setDistricts] = useState([]);
@@ -60,7 +60,7 @@ const Address = ({ payload, setPayload }) => {
     useEffect(() => {
         setPayload(prev => ({
             ...prev,
-            address: `${ward ? `${wards?.find(item => item.ward_id === ward)?.ward_name},` : ""} ${districtId ? `${districts?.find(item => item.district_id === districtId)?.district_name},` : ""} ${province ? `${provinces?.find(item => item.province_id === province)?.province_name}` : ""} `,
+            address: `${ward ? `${wards?.find(item => item.ward_id === ward)?.ward_name}, ` : ""}${districtId ? `${districts?.find(item => item.district_id === districtId)?.district_name}, ` : ""}${province ? `${provinces?.find(item => item.province_id === province)?.province_name}` : ""}`,
             province: province ? `${provinces?.find(item => item.province_id === province)?.province_name}` : ""
         }))
     }, [province, districtId]);
@@ -73,9 +73,30 @@ const Address = ({ payload, setPayload }) => {
 
             <div className='flex flex-col gap-4'>
                 <div className='flex items-center gap-4'>
-                    <Select type="province" value={province} setValue={setProvince} options={provinces} label="Tỉnh / Thành phố" />
-                    <Select type="district" reset={reset} value={districtId} setValue={setDistrictId} options={districts} label="Quận / Huyện" />
-                    <Select type="ward" reset={reset} value={ward} setValue={setWard} options={wards} label="Phường / Xã" />
+                    <Select 
+                        invalidFields={invalidFields} 
+                        setInvalidFields={setInvalidFields} 
+                        type="province" value={province} 
+                        setValue={setProvince} 
+                        options={provinces} 
+                        label="Tỉnh / Thành phố" />
+                    <Select 
+                        invalidFields={invalidFields}
+                        setInvalidFields={setInvalidFields} 
+                        type="district" reset={reset} 
+                        value={districtId} 
+                        setValue={setDistrictId} 
+                        options={districts} 
+                        label="Quận / Huyện" />
+                    <Select 
+                        invalidFields={invalidFields}
+                        setInvalidFields={setInvalidFields} 
+                        type="ward" 
+                        reset={reset} 
+                        value={ward} 
+                        setValue={setWard} 
+                        options={wards} 
+                        label="Phường / Xã" />
 
 
                 </div>
@@ -91,7 +112,7 @@ const Address = ({ payload, setPayload }) => {
                         value={`${ward ? `${wards?.find(item => item.ward_id === ward)?.ward_name},` : ""} ${districtId ? `${districts?.find(item => item.district_id === districtId)?.district_name},` : ""} ${province ? `${provinces?.find(item => item.province_id === province)?.province_name}` : ""} `}
                         />
                 </div> */}
-                <InputReadOnly label={"Địa chỉ chính xác"} value={`${ward ? `${wards?.find(item => item.ward_id === ward)?.ward_name},` : ""} ${districtId ? `${districts?.find(item => item.district_id === districtId)?.district_name},` : ""} ${province ? `${provinces?.find(item => item.province_id === province)?.province_name}` : ""} `} />
+                <InputReadOnly label={"Địa chỉ chính xác"} value={`${ward ? `${wards?.find(item => item.ward_id === ward)?.ward_name},` : ""} ${districtId ? `${districts?.find(item => item.district_id === districtId)?.district_name}, ` : ""}${province ?`${provinces?.find(item => item.province_id === province)?.province_name}` : ""}`} />
 
             </div>
         </div>

@@ -4,7 +4,7 @@ import { Routes, Route } from "react-router-dom";
 import { DetailPost, Header, Home, HomePage, Login, Rental, SearchDetail } from './containers/Public';
 import { path } from "./utils/constant";
 
-import { System, CreatePost } from './containers/System';
+import { System, CreatePost, ManagerPost } from './containers/System';
 import * as actions from "./store/actions";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -27,7 +27,7 @@ function App() {
     }, []);
 
     return (
-        <div className=' bg-primary'>
+        <div className=' bg-primary overflow-hidden'>
             <Routes>
                 {/*  mother routes  */}
                 <Route path={path.HOME} element={<Home /> }>
@@ -49,6 +49,8 @@ function App() {
                 {/*  mother routes  */}
                 <Route path={path.SYSTEM} element={<System />}>
                     <Route  path={path.CREATE_POST}  element={<CreatePost />}/>
+                    <Route  path={path.MANAGER_POST}  element={<ManagerPost />}/>
+
                 </Route>
 
             </Routes>
