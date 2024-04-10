@@ -4,6 +4,7 @@ const { Op } = require("sequelize");
 import { v4 as generateId } from "uuid";
 import generateCode from "../ultis/generateCode";
 import moment from "moment";
+import generateDate from "../ultis/generateDate";
 
 // get all Post
 export const getPostService = () => new Promise( async (resolve, reject) => {
@@ -39,7 +40,7 @@ export const getPostService = () => new Promise( async (resolve, reject) => {
 export const getPostLimitService = (page, query, { priceNumber, areaNumber }) => new Promise( async (resolve, reject) => {
     // console.log({ priceNumber, areaNumber });
     try {
-        let offset = ( !page || +page <= 1 ) ? 0 : (+page + 1);
+        let offset = ( !page || +page <= 1 ) ? 0 : (+page - 1);
         const queries = { ...query};
         if ( priceNumber ) queries.priceNumber = { [Op.between]: priceNumber}
         if ( areaNumber ) queries.areaNumber = { [Op.between]: areaNumber}
@@ -55,6 +56,48 @@ export const getPostLimitService = (page, query, { priceNumber, areaNumber }) =>
                 { model: db.Image, as: "images", attributes: ["image"]},
                 { model: db.Attribute, as: "attributes", attributes: ["price", "acreage", "published", "hashtag"]},
                 { model: db.User, as: "user", attributes: ["name", "zalo", "phone"]},
+
+            ],
+            attributes: ["id", "title", "star", "address", "description"]
+            // attributes: ['code', 'value']
+            // attributes: {
+            //     exclude: ["createdAt", "updated"]
+            // }
+        });
+
+        resolve({
+            err: response ? 0 : 1,
+            msg: response ? "Ok" : "Failed to get categories.",
+            response
+        })
+    } catch (error) {
+        reject(error);
+    }
+});
+
+// get post by user Id
+export const getPostLimitAdminService = (page, query, id) => new Promise( async (resolve, reject) => {
+    // console.log({ priceNumber, areaNumber });
+    // console.log(id)
+    try {
+        let offset = ( !page || +page <= 1 ) ? 0 : (+page - 1);
+        const queries = { ...query, userId: id};
+        // if ( priceNumber ) queries.priceNumber = { [Op.between]: priceNumber}
+        // if ( areaNumber ) queries.areaNumber = { [Op.between]: areaNumber}
+        const response = await db.Post.findAndCountAll({
+            where: queries,
+            raw: true,
+            nest: true,
+            // offset: page * (+process.env.LIMIT) || 0,
+            offset: offset * +process.env.LIMIT,
+            limit: +process.env.LIMIT,
+            order: [["createdAt", "DESC"]],
+            include: [
+                { model: db.Image, as: "images", attributes: ["image"]},
+                { model: db.Attribute, as: "attributes", attributes: ["price", "acreage", "published", "hashtag"]},
+                { model: db.User, as: "user", attributes: ["name", "zalo", "phone"]},
+                { model: db.Overview, as: "overviews"}
+
 
             ],
             attributes: ["id", "title", "star", "address", "description"]
@@ -110,6 +153,7 @@ export const getNewPostService = () => new Promise( async (resolve, reject) => {
 
 
 
+
 // create new post
 export const createNewPostService = (body, userId) => new Promise( async (resolve, reject) => {
     // console.log(body.province);
@@ -130,7 +174,8 @@ export const createNewPostService = (body, userId) => new Promise( async (resolv
         const labelCode = generateCode(body.label);
         const hashtag = Math.floor(Math.random() * Math.pow(10,6));
 
-        const currentDate = new Date();
+        // const currentDate = new Date();
+        const currentDate = generateDate();
 
 
         const response = await db.Post.create({
@@ -173,8 +218,8 @@ export const createNewPostService = (body, userId) => new Promise( async (resolv
             type: body?.category,
             target: body?.target,
             bonus: "Tin thường",
-            created: currentDate,
-            expired: currentDate.setDate(currentDate.getDate() + 10),
+            created: currentDate.today,
+            expired: currentDate.expireDay,
         });
 
         await db.Province.findOrCreate({

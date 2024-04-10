@@ -11,6 +11,7 @@ router.get("/new-post", postController.getNewPosts);
 
 router.use(verifyToke);
 router.post("/create-new", postController.createNewPost);
+router.get("/limit-admin", postController.getPostsLimitAdmin);
 
 
 export default router;

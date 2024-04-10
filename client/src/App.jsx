@@ -50,7 +50,7 @@ function App() {
                 <Route path={path.SYSTEM} element={<System />}>
                     <Route  path={path.CREATE_POST}  element={<CreatePost />}/>
                     <Route  path={path.MANAGER_POST}  element={<ManagerPost />}/>
-
+                    {/* 10p */}
                 </Route>
 
             </Routes>

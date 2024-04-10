@@ -10,10 +10,15 @@ import cors from "cors";
 import dbconn from "./src/config/connectDatabase";
 import initRoutes from "./src/routers";
 
+// import generateDate from "./src/ultis/generateDate";
+
 // import generateCode from "./src/ultis/generateCode";
 // console.log(generateCode(6))
 
 const app =  express();
+
+// console.log(generateDate());
+
 app.use(cors({
     origin: process.env.CLIENT_URL,
     methods: ["POST", 'GET', 'PUT', "DELETE"]

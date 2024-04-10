@@ -1,5 +1,5 @@
 import actionTypes from "./actionTypes";
-import { apiGetPost, apiGetPostLimit, apiGetNewPost } from "../../services/post";
+import { apiGetPost, apiGetPostLimit, apiGetNewPost, apiGetPostLimitAdmin } from "../../services/post";
 
 export const getPosts = () => async (dispatch) => {
     try {
@@ -76,3 +76,32 @@ export const getNewPosts = () => async (dispatch) => {
         })
     }
 };
+
+//
+export const getPostsLimitAdmin = (query) => async (dispatch) => {
+    // console.log(query);
+    try {
+        const response = await apiGetPostLimitAdmin(query);
+        if (response?.data.err === 0) {
+            dispatch({
+                type: actionTypes.GET_POSTS_ADMIN,
+                posts: response.data.response?.rows,
+                count: response.data.response?.count
+            })
+        } else {
+            dispatch({
+                type: actionTypes.GET_POSTS_ADMIN,
+                msg: response.data.msg,
+                posts: []
+            })
+        }
+
+    } catch (error) {
+        dispatch({
+            type: actionTypes.GET_POSTS_ADMIN,
+            posts: null
+        })
+    }
+};
+
+

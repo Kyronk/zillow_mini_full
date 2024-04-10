@@ -69,13 +69,15 @@ module.exports = {
                 type: Sequelize.STRING
             },
             created: {
-                type: Sequelize.DATE
+                // type: Sequelize.DATE
+                type: Sequelize.STRING
                 // type: "TIMESTAMP"
                 // allowNull: false,
                 // type: Sequelize.DATE
             },
             expired: {
-                type: Sequelize.DATE
+                // type: Sequelize.DATE
+                type: Sequelize.STRING
                 // type: "TIMESTAMP"
                 // allowNull: false,
                 // type: Sequelize.DATE

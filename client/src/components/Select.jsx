@@ -63,11 +63,16 @@ const Select = ({
                     )
                 })}
             </select>
-            <small className='text-red-500' >
                 {/* Có lỗi */}
                 {/* {invalidFields?.some(item => item.name === name) || invalidFields?.some(item => item.name === "address") && invalidFields?.find(item => item.name === name)?.message} */}
+            {/* <small className='text-red-500' >
                 {handleErrorText()}
-            </small>
+            </small> */}
+            {   invalidFields &&
+                <small className='text-red-500' >
+                    {handleErrorText()}
+                </small>
+            }
         </div>
     )
 }
