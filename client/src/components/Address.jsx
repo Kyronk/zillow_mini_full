@@ -1,20 +1,50 @@
 import React, { memo, useEffect, useState } from 'react'
 import { Select, InputReadOnly } from "../components/";
 import { apiGetPublicDistrict, apiGetPublicProvince, apiGetPublicWard } from '../services';
+import { useSelector } from 'react-redux';
 
 const Address = ({ payload, setPayload, invalidFields, setInvalidFields }) => {
+
+    const { dataEdit } = useSelector(state => state.post);
+    // console.log(dataEdit)
 
     const [provinces, setProvinces] = useState([]);
     const [districts, setDistricts] = useState([]);
     const [wards, setWards] = useState([]);
 
     const [province, setProvince] = useState("");
+    // console.log(province)
     const [district, setDistrict] = useState("");
     const [districtId, setDistrictId] = useState("");
     const [ ward, setWard ] = useState("");
     const [ reset, setReset ] = useState(false);
-    // const [ ]
 
+    // get data có sẵn để update
+    useEffect(() => {
+        if (dataEdit) {
+            let addressArr = dataEdit?.address?.split(",");
+            let foundProvince = provinces?.length > 0 && provinces?.find(item => item.province_name === addressArr[addressArr.length - 1 ]?.trim());
+            setProvince(foundProvince ? foundProvince.province_id : "");
+        }
+    }, [provinces, dataEdit]);
+
+    useEffect(() => {
+        if (dataEdit) {
+            let addressArr = dataEdit?.address?.split(",");
+            let foundDistrict = districts?.length > 0 && districts?.find(item => item.district_name === addressArr[addressArr.length - 2 ]?.trim());
+            setDistrictId(foundDistrict ? foundDistrict.district_id : "");
+        }
+    }, [districts, dataEdit]);
+
+    // useEffect(() => {
+    //     let addressArr = dataEdit?.address?.split(",");
+    //     let foundDistrict = districts.length > 0 && districts?.find(item => item.district_name === addressArr[addressArr.length - 2 ]?.trim());
+    //     setDistrictId(foundDistrict ? foundDistrict.district_id : "");
+    // }, [ward]);
+
+
+
+    // set data dể create
     useEffect(() => {
         const fetchPublicProvince = async () => {
             const response = await apiGetPublicProvince();
@@ -76,14 +106,16 @@ const Address = ({ payload, setPayload, invalidFields, setInvalidFields }) => {
                     <Select 
                         invalidFields={invalidFields} 
                         setInvalidFields={setInvalidFields} 
-                        type="province" value={province} 
+                        type="province" 
+                        value={province} 
                         setValue={setProvince} 
                         options={provinces} 
                         label="Tỉnh / Thành phố" />
                     <Select 
                         invalidFields={invalidFields}
                         setInvalidFields={setInvalidFields} 
-                        type="district" reset={reset} 
+                        type="district" 
+                        reset={reset} 
                         value={districtId} 
                         setValue={setDistrictId} 
                         options={districts} 

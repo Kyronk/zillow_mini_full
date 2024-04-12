@@ -1,44 +1,74 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Overview, Address, Loading, Button } from '../../components'
-import { apiUploadImage } from '../../services';
+import { apiUpdatePost, apiUploadImage } from '../../services';
 import { useSelector } from 'react-redux'
 import { getCodes, getCodesArea} from "../../utils/Common/getCode";
 import { apiCreatePost } from '../../services';
 import Swal  from "sweetalert2";
 import validate from '../../utils/Common/validateFields';
+import { useDispatch } from 'react-redux';
+import { resetDataEdit } from '../../store/actions';
+
 
 import { BsCameraFill, BsCloudFogFill } from "react-icons/bs";
 import { TiDeleteOutline } from "react-icons/ti";
 
 
-const CreatePost = () => {
+const CreatePost = ({ 
+    isEdit, 
+    // dataEdit
+}) => {
+    // console.log(dataEdit)
+    const dispatch = useDispatch();
+    const { dataEdit } = useSelector(state => state.post);
     const { prices, areas, categories, provinces } = useSelector(state => state.app);
     const { currentData } = useSelector(state => state.user);
 
-    const [payload, setPayload] = useState({
-        categoryCode: '',
-        title: '',
-        priceNumber: 0,
-        areaNumber: 0,
-        images: '',
-        address: '',
-        priceCode: '',
-        areaCode: '',
-        description: '',
-        target: '',
-        province: '',
+    // console.log(dataEdit)
+    // const [payload, setPayload] = useState({
+    //     categoryCode: '',
+    //     title: '',
+    //     priceNumber: 0,
+    //     areaNumber: 0,
+    //     images: '',
+    //     address: '',
+    //     priceCode: '',
+    //     areaCode: '',
+    //     description: '',
+    //     target: '',
+    //     province: '',
+    // });
 
+    const [payload, setPayload] = useState(() => {
+        const initData = {
+            categoryCode: dataEdit?.categoryCode || '',
+            title:  dataEdit?.title ||'',
+            priceNumber: dataEdit?.priceNumber * 1000000 || 0,
+            areaNumber: dataEdit?.areaNumber || 0,
+            // images: dataEdit?.images || '',
+            images: dataEdit?.images?.image ? JSON.parse(dataEdit?.images?.image) : '',
+            address: dataEdit?.address || '',
+            priceCode: dataEdit?.priceCode || '',
+            areaCode: dataEdit?.areaCode || '',
+            // description: dataEdit?.description || '',
+            description: dataEdit?.description ? JSON.parse(dataEdit?.description) : '',
+            target: dataEdit?.overviews?.target || '',
+            province: dataEdit?.province || '',
+        };
+        return initData;
     });
-
-    const [ imagesPreview, setImagesPreview ] = useState([]);
     // const [ imagesPreview, setImagesPreview ] = useState(['https://res.cloudinary.com/dwjsk2qlw/image/upload/v1712377576/zillow_mini/epo702jkfpszgum8qusn.jpg', 'https://res.cloudinary.com/dwjsk2qlw/image/upload/v1712379590/zillow_mini/kzcqzfcrif42d9trnmtc.jpg']);
 
+    const [ imagesPreview, setImagesPreview ] = useState([]);
     const [ isLoading, setIsLoading ] = useState(false);
     const [ invalidFields, setInvalidFields] = useState([]);
-    // console.log(areas)
-    // console.log({prices, areas});
 
-    // console.log(payload);
+    useEffect(() => {
+        if (dataEdit) {
+            let images = JSON.parse(dataEdit?.images?.image);
+            images && setImagesPreview(images);
+        }
+    }, [dataEdit]);
 
     const handleFiles = async (e) => {
         e.stopPropagation();
@@ -95,36 +125,54 @@ const CreatePost = () => {
         // console.log(result);
         // console.log(invalidFields);
         if ( result === 0) {
-            // console.log(finalPayload);
-            const response = await apiCreatePost(finalPayload);
-            if (response?.data?.err === 0) {
-                Swal.fire("Thành công", "Đã thêm bài đăng mới", "Success").then(() => {
-                    setPayload({
-                        categoryCode: '',
-                        title: '',
-                        priceNumber: 0,
-                        areaNumber: 0,
-                        images: '',
-                        address: '',
-                        priceCode: '',
-                        areaCode: '',
-                        description: '',
-                        target: '',
-                        province: '',
+            if (dataEdit) {
+                finalPayload.postId = dataEdit?.id;
+                finalPayload.attributesId = dataEdit?.attributesId;
+                finalPayload.imagesId = dataEdit?.imagesId;
+                finalPayload.overviewId = dataEdit?.overviewId; 
                 
-                    })
-                });
+                const response = await apiUpdatePost(finalPayload);
+                if (response?.data?.err === 0) {
+                    Swal.fire("Thành công", "Đã chỉnh sửa bài đăng thành công!", "success").then(() => {
+                        resetPayload();
+                        dispatch(resetDataEdit());
+                    });
+                } else {
+                    Swal.fire("Oop!", "Có lỗi gì đó", "error")
+                }
             } else {
-                Swal.fire("Oop!", "Có lỗi gì đó", "Error")
+                const response = await apiCreatePost(finalPayload);
+                if (response?.data?.err === 0) {
+                    Swal.fire("Thành công", "Đã thêm bài đăng mới", "success").then(() => {
+                        resetPayload();
+                    });
+                } else {
+                    Swal.fire("Oop!", "Có lỗi gì đó", "error")
+                }
             }
         }
+    };
 
-
+    const resetPayload = () => {
+        setPayload({
+            categoryCode: '',
+            title: '',
+            priceNumber: 0,
+            areaNumber: 0,
+            images: '',
+            address: '',
+            priceCode: '',
+            areaCode: '',
+            description: '',
+            target: '',
+            province: '',
+    
+        })
     }
 
     return (
         <div className='px-6'>
-            <h1 className='text-3xl font-medium py-4 border-b border-gray-200'>Đăng tin mới</h1>
+            <h1 className='text-3xl font-medium py-4 border-b border-gray-200'>{isEdit ? "Chỉnh sửa tin đăng" : "Đăng tin mới"}</h1>
             <div className='flex gap-4'>
                 <div className="py-4 flex flex-col gap-8 flex-auto">
                     <Address invalidFields={invalidFields} setInvalidFields={setInvalidFields} payload={payload} setPayload={setPayload} />
@@ -166,7 +214,11 @@ const CreatePost = () => {
                         </div>
                     </div>
 
-                    <Button onClick={handleSubmit} text='Tạo mới' bgColor='bg-green-600' textColor='text-white' />
+                    <Button 
+                        onClick={handleSubmit} 
+                        text={isEdit ? "Cập nhập" : "Tạo mới"} 
+                        bgColor='bg-green-600' 
+                        textColor='text-white' />
 
                     <div className='h-[500px]'></div>
 

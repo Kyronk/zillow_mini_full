@@ -20,3 +20,6 @@
     input range được cấu tạo từ 2 thành phần : 1 slider thumb, 2 là slider track
 
     thuộc tính appearance-none : là mặc định tuỳ theo trình duyện
+
+# Whitespace-nowrap: không phải lúc nào cũng có thể sử dụng dược white-space
+ - nếu k dùng được thì cứ cắt string ra và lấy trong khoảng như bình thường

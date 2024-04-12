@@ -1,6 +1,6 @@
 import React from 'react'
 
-const InputFormV2 = ({ label, unit, value, setValue, name, small, invalidFields, setInvalidFields  }) => {
+const InputFormV2 = ({ label, unit, value, setValue, name, small, invalidFields, setInvalidFields, direction }) => {
 
     const handleErrorText = () => {
         // let textError = "";
@@ -13,13 +13,13 @@ const InputFormV2 = ({ label, unit, value, setValue, name, small, invalidFields,
     };
 
     return (
-        <div>
-            <label htmlFor="title">{label}</label>
-            <div className='flex items-center'>
+        <div className={`pt-4 pb-4 flex ${direction ? direction : "flex-col"}`}>
+            <label  className='w-48 flex-none' htmlFor="title">{label}</label>
+            <div className='flex flex-auto items-center'>
                 <input 
                     type="text" 
                     id="title" 
-                    className={`${unit ? 'rounded-tl-md rounded-bl-md ' : "rounded-md"} w-full outline-none border border-gray-300 p-2`} 
+                    className={`${unit ? 'rounded-tl-md rounded-bl-md ' : "rounded-md"} outline-none border flex-auto border-gray-300 p-2`} 
                     value={value}
                     onChange={(e) => setValue(prev => ({...prev, [name]: e.target.value}))}
                     onFocus={() => setInvalidFields([])}
@@ -28,9 +28,13 @@ const InputFormV2 = ({ label, unit, value, setValue, name, small, invalidFields,
                 {unit && <span className='p-2 flex-none w-16 border bg-gray-200 flex items-center justify-center rounded-tr-md rounded-br-md'>{unit}</span>}
             </div>
             {small && <small className='opacity-70 whitespace-nowrap' >{small}</small>}
-            <small className='text-red-500 block'>
-                {invalidFields?.some(item => item.name === name) && invalidFields?.find(item => item.name === name)?.message}
-            </small>
+            
+            {
+                invalidFields?.some(item => item.name === name) &&
+                <small className='text-red-500 block'>
+                    { invalidFields?.find(item => item.name === name)?.message}
+                </small>
+            }
         </div>
     )
 }

@@ -6,6 +6,7 @@ const initState = {
     count: 0,
     newPosts: [],
     postsOfCurrent: [],
+    dataEdit: null,
 }
 
 const postReducer = (state = initState, action) => {
@@ -33,6 +34,18 @@ const postReducer = (state = initState, action) => {
                 postsOfCurrent: action.posts || [],
                 msg: action.msg || "",
                 // count: action.count || 0
+            }
+        
+        case actionTypes.EDIT_DATA: 
+            return {
+                ...state,
+                dataEdit: action.dataEdit || null
+            }
+
+        case actionTypes.RESET_DATAEDIT:
+            return {
+                ...state,
+                dataEdit: null
             }
 
         // case actionTypes.GET_POSTS_LIMIT:

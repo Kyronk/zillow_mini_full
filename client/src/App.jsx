@@ -4,7 +4,7 @@ import { Routes, Route } from "react-router-dom";
 import { DetailPost, Header, Home, HomePage, Login, Rental, SearchDetail } from './containers/Public';
 import { path } from "./utils/constant";
 
-import { System, CreatePost, ManagerPost } from './containers/System';
+import { System, CreatePost, ManagerPost, EditAccount } from './containers/System';
 import * as actions from "./store/actions";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -50,7 +50,8 @@ function App() {
                 <Route path={path.SYSTEM} element={<System />}>
                     <Route  path={path.CREATE_POST}  element={<CreatePost />}/>
                     <Route  path={path.MANAGER_POST}  element={<ManagerPost />}/>
-                    {/* 10p */}
+                    <Route  path={path.EDIT_ACCOUNT}  element={<EditAccount />}/>
+                    
                 </Route>
 
             </Routes>
