@@ -23,3 +23,13 @@
 
 # Whitespace-nowrap: không phải lúc nào cũng có thể sử dụng dược white-space
  - nếu k dùng được thì cứ cắt string ra và lấy trong khoảng như bình thường
+
+
+# Lưu hình ảnh
+ - lưu trên cloud dynary
+ - lưu trên database 
+    + dung lượng rất lớn, tốc độ chậm
+    + ban đầu hình ảnh từ phía client gửi lưu định dạng sang base64
+    + rồi từ base 64 trả vể thì cần dùng thư viện buffer npm package
+    + cái này khá nặng nên nếu lưu ít ít avatar đồ thì lưu được
+    + ví dụ mà lưu nhiều ảnh (sản phẩm, ...) thì nên dùng cloud

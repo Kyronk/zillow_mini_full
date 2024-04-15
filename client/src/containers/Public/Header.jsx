@@ -40,7 +40,8 @@ const menuManage1 = [
     {
         id: 5,
         text: 'Liên hệ',
-        path: '/he-thong/lien-he',
+        // path: '/he-thong/lien-he',
+        path: '/lien-he',
         icon: <BiUserPin />
     }
 ]

@@ -1,58 +1,69 @@
 import React, { useState } from 'react'
 import { InputReadOnly, InputFormV2, Button } from '../../components'
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { apiUploadImage, apiUpdateUser } from '../../services';
 import validate from '../../utils/Common/validateFields';
+import { fileToBase64, blobToBase64 } from '../../utils/Common/tobase64';
+import { getCurrent } from '../../store/actions';
+import Swal from 'sweetalert2';
+// import 
 
 import anonAvatar from "../../assets/anon-avatar.png";
 
 
 const EditAccount = () => {
     const { currentData } = useSelector(state => state.user); 
+    const dispatch = useDispatch();
 
     const [invalidFields, setInvalidFields] = useState([]);
     const [ payload, setPayload] = useState({
         name: currentData?.name || "",
-        avatar: currentData?.avatar || "",
+        avatar: blobToBase64(currentData?.avatar || "") || "",
+        // avatar: currentData?.avatar || "",
         fbUrl: currentData?.fbUrl || "",
         zalo: currentData?.zalo || ""
     })
     // console.log(currentData.zalo);
     // console.log(payload)
 
-    const handleSubmit = () => {
-        const invalidcounter = validate(payload, setInvalidFields);
-        console.log(invalidcounter);
+    const handleSubmit = async () => {
+        // const invalidcounter = validate(payload, setInvalidFields);
+        // console.log(invalidcounter);
+        // bỏ qua validate cũng được 
+        const response = await apiUpdateUser(payload);
+        // console.log(response)
         // console.log(payload);
+        if ( response?.data.err === 0) {
+            Swal.fire("Done", "Chỉnh sửa thông tin cá nhân thành công", "success").then(() => {
+                dispatch(getCurrent());
+            })
+        } else {
+            Swal.fire("Oops!", "Chỉnh sửa thông tin cá nhân không thành công", "error");
+        }
     };
 
     const handleUploadFile = async (e) => {
-        const image = e.target.files[0];
-        // e.stopPropagation();
-        // setIsLoading(true);
-        // let images = [];
-        // let files = e.target.files;
-        const formData = new FormData();
-        formData.append("file", image);
-        formData.append("upload_preset", import.meta.env.VITE_UPLOAD_ASSETS_NAME);
-        const response = await apiUploadImage(formData);
-        console.log(response);
-        if (response.status === 200) {
-            setPayload(prev => ({
-                ...prev,
-                avatar: response?.data?.secure_url,
-            }))
-        }
-        // for (let i of files) {
-        //     let response = await apiUploadImage(formData);
-        //     // console.log(response);
-        //     if ( response.status === 200) images = [...images, response?.data?.secure_url]
+        // cách này lưu trên cloud
+        // const image = e.target.files[0];
+        // const formData = new FormData();
+        // formData.append("file", image);
+        // formData.append("upload_preset", import.meta.env.VITE_UPLOAD_ASSETS_NAME);
+        // const response = await apiUploadImage(formData);
+        // console.log(response);
+        // if (response.status === 200) {
+        //     setPayload(prev => ({
+        //         ...prev,
+        //         avatar: response?.data?.secure_url,
+        //     }))
         // };
-        // setIsLoading(false);
-        // setImagesPreview(images);
-        // setImagesPreview(prev => [...prev, ...images]);
-        // setPayload(prev => ({...prev, images: JSON.stringify(images)}))
-        // setPayload(prev => ({...prev, images: [ ...prev.images, ...images] }));
+
+        // cách này lưu trên DB
+        const imageBase64 = await fileToBase64(e.target.files[0]);
+        // console.log(imageBase64);
+        setPayload(prev => ({
+            ...prev,
+            avatar: imageBase64,
+        }))
     }
 
     return (
@@ -112,6 +123,12 @@ const EditAccount = () => {
                     <label className="w-48 flex-none" htmlFor="avatar">Ảnh đại diện</label>
                     <div>
                         <img src={payload.avatar|| anonAvatar} alt="" className='w-28 h-28 rounded-full object-cover' />
+                        {/* validate disable */}
+                        {/* {invalidFields?.some(item => item.name === 'avatar') &&
+                            <small className='text-red-500 block w-full'>
+                                {invalidFields?.find(item => item.name === 'avatar')?.message}
+                            </small>
+                        } */}
                         <input onChange={handleUploadFile} type="file" className='appearance-none my-4' id="avatar" />
                     </div>
                 </div>
@@ -123,10 +140,9 @@ const EditAccount = () => {
                     fullWidth
                     onClick={handleSubmit}
                 />
-            </div>
-            </div>
-            <div className='h-10'>
 
+                <div className='h-20'></div>
+            </div>
             </div>
         </div>
     )

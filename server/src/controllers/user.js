@@ -12,7 +12,7 @@ export const getCurrent = async (req, res) => {
     } catch (error) {
         return res.status(500).json({
             err: -1,
-            msg: "Failed at post controller" + error,
+            msg: "Failed at user get by id controller" + error,
         })
     }
 };
@@ -21,7 +21,7 @@ export const getCurrent = async (req, res) => {
 export const updateCurrent = async (req, res) => {
     
     const { id } = req.user;
-    const { payload } = req.body; 
+    const  payload  = req.body; 
     try {
         if (!payload) return res.status(400).json({
             err: 1,
@@ -34,7 +34,7 @@ export const updateCurrent = async (req, res) => {
     } catch (error) {
         return res.status(500).json({
             err: -1,
-            msg: "Failed at post controller" + error,
+            msg: "Failed at user update controller" + error,
         })
     }
 };

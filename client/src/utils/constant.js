@@ -13,6 +13,7 @@ export const path = {
     CREATE_POST: 'tao-moi-bai-dang',
     MANAGER_POST: 'quan-ly-bai-dang',
     EDIT_ACCOUNT: 'sua-thong-tin-ca-nhan',
+    CONTACT: "lien-he",
 };
 
 export const text = {

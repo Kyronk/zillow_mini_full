@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 // import menuManage from '../../utils/menuManage';
 import { Link, NavLink } from 'react-router-dom';
 import * as action from "../../store/actions";
+import { blobToBase64 } from '../../utils/Common/tobase64';
 
 // icon
 import { MdOutlineHouseSiding, MdOutlineLibraryBooks } from 'react-icons/md'
@@ -26,9 +27,16 @@ const menuManage1 = [
         icon: <MdOutlineLibraryBooks />
     },
     {
-        id: 4,
+        id: 3,
         text: 'Sửa thông tin cá nhân',
         path: '/he-thong/sua-thong-tin-ca-nhan',
+        icon: <BiUserPin />
+    },
+    {
+        id: 4,
+        text: 'Liên hệ',
+        // path: '/he-thong/lien-he',
+        path: '/lien-he',
         icon: <BiUserPin />
     }
 ];
@@ -53,7 +61,7 @@ const Sidebar = () => {
         >
             <div className='flex flex-col gap-4'>
                 <div className='flex items-center gap-4'>
-                    <img src={anonAvatar} alt="avatar" className='w-12 h-12 object-cover rounded-full border-2 border-white' />
+                    <img src={ blobToBase64(currentData?.avatar || "" ) ||anonAvatar} alt="avatar" className='w-12 h-12 object-cover rounded-full border-2 border-white' />
                     <div className='flex flex-col justify-center'>
                         <span className='font-semibold'>{currentData?.name}</span>
                         <small>{currentData?.phone}</small>

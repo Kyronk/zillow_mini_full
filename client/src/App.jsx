@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Routes, Route } from "react-router-dom";
 
-import { DetailPost, Header, Home, HomePage, Login, Rental, SearchDetail } from './containers/Public';
+import { DetailPost, Header, Home, HomePage, Login, Rental, SearchDetail, Contact } from './containers/Public';
 import { path } from "./utils/constant";
 
 import { System, CreatePost, ManagerPost, EditAccount } from './containers/System';
@@ -40,6 +40,8 @@ function App() {
                     <Route path={path.CHO_THUE_PHONG_TRO} element={<Rental />} />
                     <Route path={path.SEARCH} element={<SearchDetail />} />
                     <Route path={path.DETAL_POST__TITLE__POSTID} element={<DetailPost />} />
+                    <Route path={path.CONTACT} element={<Contact />} />
+
                     <Route path={"chi-tiet/*"} element={<DetailPost />} />
 
 
