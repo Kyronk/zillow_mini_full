@@ -21,7 +21,7 @@ const Contact = () => {
 
     return ( 
         <div className='w-full'>
-            <h1 className='text-2xl'>Liên hệ với chúng tôi</h1>
+            <h1 className='text-2xl pb-5' >Liên hệ với chúng tôi</h1>
             <div className='flex gap-4'>
                 <div className='flex-1 flex flex-col gap-4 h-fit bg-red-400 rounded-3xl p-4 text-white bg-gradient-to-br from-blue-700 to-cyan-400'>
                     <h4 className='font-medium'>Thông tin liên hệ</h4>

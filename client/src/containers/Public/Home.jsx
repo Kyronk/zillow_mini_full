@@ -14,7 +14,7 @@ const Home = () => {
     const { isLoggedIn } = useSelector(state => state.auth);
     const { currentData } = useSelector(state => state.user);
     const location = useLocation();
-    console.log(location)
+    // console.log(location)
     
     // useEffect(() => {
     //     dispatch(actions.getPrice());
@@ -35,7 +35,7 @@ const Home = () => {
             <Header />
             <Navigation />
             {/* { isLoggedIn && <Search />} */}
-            { isLoggedIn && location.pathname !== `/${path.CONTACT}` &&  <Search />}
+            { isLoggedIn && location.pathname !== `/${path.CONTACT}` && !location.pathname?.includes(path.DETAIL) && <Search />}
             <div className="w-4/5 lg:w-3/5 flex flex-col items-start justify-start mt-3 " >
                 <Outlet />
             </div>

@@ -2,6 +2,7 @@ import React, {memo, useState} from 'react'
 import icons from "../utils/icons";
 import { useNavigate, Link } from "react-router-dom";
 import { formatVietnameseToString } from '../utils/Common/formatVietnameseToString';
+import { path } from '../utils/constant';
 
 // const images = [
 //     "https://pt123.cdn.static123.com/images/thumbs/900x600/fit/2022/07/19/6310726d-d075-4e35-b1cb-cf5616bf5212_1658240491.jpg",
@@ -45,7 +46,8 @@ const Item = ({
     return (
         <div className='w-full flex border-t border-orange-600 py-4'>
             <Link
-                to={`chi-tiet/${formatVietnameseToString(title)}/${id}`}
+                // to={`chi-tiet/${formatVietnameseToString(title)}/${id}`}
+                to={`${path.DETAIL}${formatVietnameseToString(title.replaceAll("/", ""))}/${id}`}
                 className='w-2/5 flex flex-wrap gap-[2px] items-center relative cursor-pointer'>
                 {/* <div className='flex gap-1'> */}
                     {/* <img src={images[0]} alt="preview" className='w-[140px] h-[120px] object-cover' />
@@ -71,7 +73,10 @@ const Item = ({
 
             <div className='w-3/5'>
                 <div className='flex justify-between gap-4 w-full'>
-                    <div className='text-red-600 font-medium'>
+                    <Link 
+                        className='text-red-600 font-medium'
+                        to={`${path.DETAIL}${formatVietnameseToString(title.replaceAll("/", ""))}/${id}`}
+                        >
                         {handleStar(+star).length > 0 && handleStar(+star).map((star, number) => {
                             return (
                                 <span key={number}>{star}</span>
@@ -86,7 +91,7 @@ const Item = ({
 
                         {/* CHO THUÊ CĂN HỘ HOẶC VĂN PHÒNG LÀM VIỆC */}
                         {title}
-                    </div>
+                    </Link>
 
                     <div className='w-[10%] flex justify-end'>
                         <BsBookmarkStarFill size={24} color="orange" />

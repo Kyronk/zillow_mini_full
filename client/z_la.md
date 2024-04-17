@@ -5,6 +5,8 @@
     - axios
     - react-router-dom
 
+    - react-slick: để tạo mấy cái slider, header, main home
+
 
 # luu ý tailwind khi dùng với vite và npm app nó khác nhau
 

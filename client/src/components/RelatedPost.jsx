@@ -5,8 +5,9 @@ import { useDispatch, useSelector } from "react-redux";
 import * as actions from "../store/actions";
 
 const RelatedPost = () => {
-    const { newPosts } = useSelector(state => state.post);
     const dispatch = useDispatch();
+    const { newPosts } = useSelector(state => state.post);
+    // console.log(newPosts)
 
     useEffect(() => {
         dispatch(actions.getNewPosts());

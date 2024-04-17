@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom';
 
 import { apiGetCategory } from '../../services/category';
 import { formatVietnameseToString } from '../../utils/Common/formatVietnameseToString';
+import { path } from "../../utils/constant";
 
 import { useDispatch, useSelector } from "react-redux";
 import * as actions from "../../store/actions";
@@ -75,9 +76,14 @@ const Navigation = ({isAdmin}) => {
                             </NavLink>
                         </div>
                     )
-                })
+                })}
 
-                }
+                <NavLink
+                    to={path.CONTACT}
+                    className={({isActive}) => isActive ? active : notActive}
+                >
+                    Liên hệ
+                </NavLink>
 
             </div>
         </div>

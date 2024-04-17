@@ -4,6 +4,9 @@ import { Routes, Route } from "react-router-dom";
 import { DetailPost, Header, Home, HomePage, Login, Rental, SearchDetail, Contact } from './containers/Public';
 import { path } from "./utils/constant";
 
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+
 import { System, CreatePost, ManagerPost, EditAccount } from './containers/System';
 import * as actions from "./store/actions";
 import { useDispatch, useSelector } from "react-redux";
@@ -41,8 +44,9 @@ function App() {
                     <Route path={path.SEARCH} element={<SearchDetail />} />
                     <Route path={path.DETAL_POST__TITLE__POSTID} element={<DetailPost />} />
                     <Route path={path.CONTACT} element={<Contact />} />
+                    {/* <Route path={path.DETAIL_ALL} element={<DetailPost />} /> */}
 
-                    <Route path={"chi-tiet/*"} element={<DetailPost />} />
+                    {/* <Route path={"chi-tiet/*"} element={<DetailPost />} /> */}
 
 
                 
