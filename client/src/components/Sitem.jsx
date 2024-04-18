@@ -1,6 +1,11 @@
 import React from 'react'
 // import moment from "moment";
 // import moment from 'moment/dist/moment';
+
+import icons from "../utils/icons";
+const { FaStar } = icons;
+
+
 import moment from 'moment/min/moment-with-locales'; // fix tieng vn done
 
 //  moment là để format ra tiếng viẹt nam
@@ -13,11 +18,18 @@ const Sitem = ({
     title = "title",
     price,
     image,
-    createdAt
+    createdAt,
+    star
 }) => {
 
     const formatTime = (createAt) => {
         return moment(createAt).fromNow();
+    }
+
+    const handleStar = (star) => {
+        let stars = [];
+        for ( let i = 1; i <= +star ; i++) stars.push(<FaStar className='star-item' size={18} color='yellow'/>)
+        return stars;
     }
     
 
@@ -31,7 +43,13 @@ const Sitem = ({
                 />
 
             <div className='flex flex-col justify-between w-full gap-1 flex-auto'>
-                <h4 className='text-blue-600 text-[14px]'>{`${title.slice(0, 40)}...`}.</h4>
+                <h4 className='text-blue-600 text-[14px]'>
+                    {handleStar(+star).length > 0 && handleStar(+star).map((star, number) => {
+                            return (
+                                <span key={number}>{star}</span>
+                            )
+                        })}
+                    {`${title.slice(0, 40)}...`}.</h4>
                 <div className='flex items-center justify-between w-full'>
                     <span className='text-sm font-medium text-green-500'>{price}</span>
                     {/* <span className='text-sm text-gray-300'>{moment(createdAt).fromNow()}</span> */}

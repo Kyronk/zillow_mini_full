@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from "react-redux";
-import { SliderCustom } from '../../components';
+import { SliderCustom, RelatedPost } from '../../components';
+
+import { BoxInfo} from "../../components/"
 
 // import { apiGetPostLimit } from '../../services/post';
 import { getPostsLimit } from "../../store/actions";
@@ -32,7 +34,7 @@ const DetailPost = () => {
         <div className='w-full flex gap-4'>
             <div className='w-[70%]'>
                 <SliderCustom
-                    images={posts && postId.length > 0 && JSON.parse(posts[0]?.images?.image)}
+                    // images={posts && postId.length > 0 && JSON.parse(posts[0]?.images?.image) || ""}
                 />
                 <div className='bg-white rounded-md shadow-md p-4'>
                     <div className='flex flex-col gap-2' >
@@ -144,12 +146,21 @@ const DetailPost = () => {
 
                     <div className='mt-8'>
                         <h3 className='font-semibold text-xl my-4'>Bản đồ</h3>
+                        {/* chỗ map này tốn tiền nên không làm :))) */}
                     </div>
                 </div>
 
             </div>
-            <div className='w-[30%]'>
-                DetailPost
+
+            {/* DetailPost */}
+            <div className='w-[30%] flex flex-col gap-8'>
+                <BoxInfo 
+                    userData={posts[0]?.user}
+                />
+
+                <RelatedPost />
+                <RelatedPost newPost/>
+
             </div>
         </div>
     )
