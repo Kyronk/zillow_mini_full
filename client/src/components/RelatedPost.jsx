@@ -25,10 +25,11 @@ const RelatedPost = ({ newPost }) => {
             {/* <h3 className='font-semibold text-lg'>Tin mới đăng</h3> */}
             <h3 className='font-semibold text-lg'>{newPost ? "Tin nới đăng" : "Tin nổi bật"}</h3>
             <div className='w-full flex flex-col gap-2'>
-                {posts?.map(item => {
+                {posts?.map((item, index )=> {
                     return (
                         <Sitem 
-                            key={item.id}
+                            key={index}
+                            // key={item.id}
                             title={item.title}
                             price={item?.attributes?.price}
                             createdAt={item.createdAt}

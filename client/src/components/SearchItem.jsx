@@ -15,7 +15,9 @@ const SearchItem = ({
                 {iconBefore}
                 {/* <span className={fontWeight && "font-medium text-black"}>{text}</span> */}
                 
-                <span className={`${fontWeight && 'font-medium text-black'} w-[100px] ${text ? "font-medium text-black" : ""} overflow-hidden text-ellipsis whitespace-nowrap`}>{text || defaultText}</span>
+                <span className={`${fontWeight && 'font-medium text-black'} w-[100px] ${text ? "font-medium text-black" : ""} overflow-hidden text-ellipsis whitespace-nowrap`}>
+                    {text || defaultText}
+                </span>
 
             </div>
             {iconAfter}

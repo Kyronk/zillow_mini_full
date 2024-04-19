@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Button, Item } from "../../components";
 import { getPosts, getPostsLimit } from '../../store/actions/post';
 import { useDispatch, useSelector } from "react-redux";
@@ -10,7 +10,9 @@ const List = ({categoryCode}) => {
     const [ searchParams ] = useSearchParams(); 
     const listRef = useRef();
     const dispatch = useDispatch();
+
     // console.log(page)
+    const [ sort, setSort ] = useState(0)
     const { posts, count } = useSelector(state => state.post);
     // useEffect(() => {
     //     let page = searchParams.get("page");
@@ -69,9 +71,10 @@ const List = ({categoryCode}) => {
                 searchParamsObject = { ...searchParamsObject, [i[0]]: [i[1]] }
             }
         })
-        if (categoryCode) searchParamsObject.categoryCode = categoryCode
+        if (categoryCode) searchParamsObject.categoryCode = categoryCode;
+        if ( sort === 1) searchParamsObject.order = ['createdAt', 'DESC'];
         dispatch(getPostsLimit(searchParamsObject))
-    }, [searchParams, categoryCode])
+    }, [searchParams, categoryCode, sort])
 
 
     return (
@@ -83,16 +86,23 @@ const List = ({categoryCode}) => {
 
             <div className='flex items-center gap-2 my-2'>
                 <span>Sắp xếp: </span>
-                <Button bgColor="bg-gray-200" text="Mặc định" />
-                <Button bgColor="bg-gray-200" text="Mới nhất" />
+                <span
+                    onClick={() => setSort(0)} 
+                    className={`bg-gray-200 p-2 rounded-md cursor-pointer hover:underline ${sort === 0 && "text-red-500"}`}>Mặc định</span>
+                <span 
+                    onClick={() => setSort(1)}
+                    className={`bg-gray-200 p-2 rounded-md cursor-pointer hover:underline ${sort === 1 && "text-red-500"}`}>Mới nhất</span>
+                {/* <Button bgColor="bg-gray-200" text="Mặc định" />
+                <Button bgColor="bg-gray-200" text="Mới nhất" /> */}
 
             </div>
 
             <div className='items'>
-                {posts?.length > 0 && posts.map(item => {
+                {posts?.length > 0 && posts.map((item, index) => {
                     return (
                         <Item 
-                            key={item?.id}
+                            key={index}
+                            // key={item?.id}
                             address={item?.address}
                             attributes={item?.attributes}
                             // images={item?.images}

@@ -54,7 +54,7 @@ const Item = ({
                     <img src={images[1]} alt="preview" className='w-[140px] h-[120px] object-cover' />
                     <img src={images[2]} alt="preview" className='w-[140px] h-[120px] object-cover' />
                     <img src={images[3]} alt="preview" className='w-[140px] h-[120px] object-cover' /> */}
-                    {images?.length > 0 && images.filter((i, index) => indexs.some(i=> i === index))?.map((i, index) => {
+                    {images?.length > 0 && images.filter((i, index) => [...Array(4).keys()].some(i=> i === index))?.map((i, index) => {
                         return (
                             <img key={index} src={i} alt="preview" className='w-[47%] h-[120px] object-cover' />
                         )
@@ -126,12 +126,15 @@ const Item = ({
                             {`Gọi ${user?.phone}`}
                         </button>
 
-                        <button
-                            type='button'
+                        <a
+                            // type='button'
                             className='text-blue-700 px-1 rounded-md border border-blue-700'
+                            // href={`https://zalo.me/${user?.zalo}`}
+                            href='#'
+                            target='_blank'
                         >
                             Nhắn Zalo
-                        </button>
+                        </a>
                     </div>
                 </div>
 

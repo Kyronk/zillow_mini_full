@@ -65,6 +65,8 @@ export const getPostLimitService = (
                 { model: db.Attribute, as: "attributes", attributes: ["price", "acreage", "published", "hashtag"]},
                 { model: db.User, as: "user", attributes: ["name", "zalo", "phone"]},
                 { model: db.Overview, as: "overviews"},
+                { model: db.Label, as: 'labelData', attributes: {exclude: ["createdAt", "updatedAt"]}}
+
 
             ],
             attributes: ["id", "title", "star", "address", "description"]
@@ -155,13 +157,14 @@ export const getPostLimitAdminService = (page, query, id) => new Promise( async 
             nest: true,
             // offset: page * (+process.env.LIMIT) || 0,
             offset: offset * +process.env.LIMIT,
+            // order: ["createdAt", "DESC"],
             limit: +process.env.LIMIT,
-            order: ["createdAt", "DESC"],
             include: [
                 { model: db.Image, as: "images", attributes: ["image"]},
                 { model: db.Attribute, as: "attributes", attributes: ["price", "acreage", "published", "hashtag"]},
                 { model: db.User, as: "user", attributes: ["name", "zalo", "phone"]},
                 { model: db.Overview, as: "overviews"},
+                { model: db.Label, as: 'labelData'}
                 // { model: db.Overview.}
 
 

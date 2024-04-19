@@ -8,6 +8,9 @@ import { BoxInfo} from "../../components/"
 // import { apiGetPostLimit } from '../../services/post';
 import { getPostsLimit } from "../../store/actions";
 import objToArr from '../../utils/Common/objToArr';
+// import { useNavigate, createSearchParams } from 'react-router-dom';
+import { createSearchParams, useNavigate } from 'react-router-dom';
+import { path } from '../../utils/constant';
 
 // icon
 import { FaLocationArrow } from "react-icons/fa";
@@ -22,13 +25,22 @@ const DetailPost = () => {
     // const params = useParams();
     const dispatch = useDispatch();
     const { posts } = useSelector(state => state.post);
-    console.log(posts);
-    // console.log(objToArr(posts[0]?.overviews))
+    const navigate = useNavigate();
 
     useEffect(() => {
         postId && dispatch(getPostsLimit({ limitPost: 1, id: postId }));
 
     }, [postId]);
+
+    // const handleFilterLabel = () => {
+    //     const titleSearch = `Tìm kiếm tin đăng theo chuyên mục ${posts[0]?.labelData?.value}`;
+    //     navigate({
+    //         pathname: `/${path.SEARCH}`,
+    //         search: createSearchParams(
+    //             {labelCode: posts[0]?.labelDate?.code}
+    //         ).toString()
+    //     }, {state: {titleSearch}})  
+    // }   
 
     return (
         <div className='w-full flex gap-4'>
@@ -41,7 +53,10 @@ const DetailPost = () => {
                         <h2 className='text-xl font-semibold text-red-600 my-2'>{posts[0]?.title || ""}</h2>
                         <div className='flex items-center gap-2'>
                             <span>Chuyên mục:</span>
-                            <span className='text-blue-600 underline font-medium hover:text-orange-600 cursor-pointer'>{posts[0]?.overviews?.area}</span>
+                            <span 
+                                className='text-blue-600 underline font-medium hover:text-orange-600 cursor-pointer'
+                                // onClick={handleFilterLabel}
+                                >{posts[0]?.labelData?.value}</span>
                         </div>
 
                         <div className='flex items-center gap-2'>

@@ -148,7 +148,10 @@ const Header = () => {
                         text={"Đăng tin mới"} 
                         textColor="text-white" 
                         bgColor="bg-secondary2"  
-                        IcAfter={CiCirclePlus }/>
+                        IcAfter={CiCirclePlus }
+                        onClick={() => navigate("/he-thong/tao-moi-bai-dang")}
+                        
+                        />
 
 
                 </div>
